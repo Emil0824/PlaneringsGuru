@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:planeringsguru/widgets/addEvent.dart';
 import 'package:planeringsguru/widgets/daySchedule.dart';
 
 void main() {
@@ -104,11 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),*/
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      floatingActionButton: AddEvent(),
     );
   }
 }

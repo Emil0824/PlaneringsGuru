@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:planeringsguru/widgets/Event.dart';
+import 'package:planeringsguru/classes/dayEvent.dart';
 
 
 class DaySchedule extends StatefulWidget {
@@ -8,12 +10,23 @@ class DaySchedule extends StatefulWidget {
   State<DaySchedule> createState() => _DaySchedule();
 
 
+  static addEvent(TimeOfDay start, TimeOfDay end, String title){
+    
+      _DaySchedule.dayTasks.add(DayEvent(
+        start: start, 
+        end: end, 
+        title: title
+        ));
+        
+    
+  }
 }
+
 
 
 class _DaySchedule extends State<DaySchedule>{
 
-  var dayTasks = [{8, 10,"Kms"},{13, 14,"Try again"}];
+  static List<DayEvent> dayTasks = [DayEvent(start: TimeOfDay(hour: 10, minute: 00), end: TimeOfDay(hour: 14, minute: 00), title: "test")];
   var list = [for(var i=8; i<21; i+=1) i];
 
   @override
@@ -26,26 +39,28 @@ class _DaySchedule extends State<DaySchedule>{
           )
         ),
         Positioned.fill(
-          left: MediaQuery.of(context).size.width /4,
-          right: MediaQuery.of(context).size.width /4,
-          
-          child: ListView.builder(
+          child: Event(
+              scheduleData: dayTasks,
+          )
+        )
+
+        /*
             itemCount: dayTasks.length,
             itemBuilder: (context, index)  {
-              final start = dayTasks[index].elementAt(0);
-              final end = dayTasks[index].elementAt(1);
-              final note = dayTasks[index].elementAt(2);
+              final start = dayTasks[index].start.hour;
+              final end = dayTasks[index].end.hour;
+              final note = dayTasks[index].title;
               
-            },
-          )
+           */
            
-        )
+        
       ],
     );
       
       
     
   }
+
   
 }
 
@@ -97,9 +112,11 @@ class SchedulePainter extends CustomPainter{
    
   }
 
+
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return false;
   }
 
 }
+

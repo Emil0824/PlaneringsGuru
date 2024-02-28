@@ -33,7 +33,7 @@ class _AddEventState extends State<AddEvent>{
         return AlertDialog(
           title: Text("Välj start och slut tid!"),
           content: StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
+            builder: (BuildContext context, StateSetter setState) {           
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -50,7 +50,7 @@ class _AddEventState extends State<AddEvent>{
                   ListTile(
                     title: Text("Start tid"),
                     
-                    subtitle: Text(_startTime.format(context)),
+                    subtitle: Text("${_startTime.hour}:${_startTime.minute}"),
                     onTap: () async{
                       final tid = await timePick(true);
                       if (tid != null) {
@@ -67,7 +67,7 @@ class _AddEventState extends State<AddEvent>{
                   ),
                   ListTile(
                     title: Text("Slut tid"),
-                    subtitle: Text(_endTime.format(context)),
+                    subtitle: Text("${_endTime.hour}:${_endTime.minute}"),
                     onTap: () async{
                       final tid = await timePick(false);
                       if (tid != null) {
@@ -108,6 +108,12 @@ class _AddEventState extends State<AddEvent>{
     final tid = await showTimePicker(
       context: context, 
       initialTime: isStart ? _startTime : _endTime,
+      builder: (BuildContext context, Widget? child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          child: child!,
+        );
+      }
     );
 
     return tid;

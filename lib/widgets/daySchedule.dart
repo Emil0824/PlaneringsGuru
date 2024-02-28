@@ -78,8 +78,27 @@ class SchedulePainter extends CustomPainter{
     //height for each space between
     final double spaceBetween = size.height / 12;
 
+    //Draws the line for the current time
+    final double nowOffset = spaceBetween * (TimeOfDay.now().hour - 8) + spaceBetween/60*TimeOfDay.now().minute;
+    canvas.drawLine(Offset(0, nowOffset), Offset(size.width, nowOffset), Paint()
+      ..color = Colors.red[400]!
+      ..strokeWidth = 1.0
+    );
+    //writes the current time above the line
+    TextPainter tpain = TextPainter(text:
+     TextSpan(
+      text: "${TimeOfDay.now().hour}:${TimeOfDay.now().minute}", 
+      style: TextStyle(color: Colors.red[500],)
+      ),
+      textDirection: TextDirection.ltr
+    );
     
-    
+    tpain.layout(
+      minWidth: 0,
+      maxWidth: size.width,
+    );
+
+    tpain.paint(canvas, Offset(size.width - tpain.width- 10, nowOffset - tpain.height));
     
     //drawing horizontal lines for each hour
     for (int i = 1; i <= 12; i++) {
@@ -107,7 +126,6 @@ class SchedulePainter extends CustomPainter{
       tp.paint(canvas, Offset(10, y - tp.height));
 
     }
-
 
    
   }

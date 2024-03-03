@@ -44,15 +44,7 @@ class _DaySchedule extends State<DaySchedule>{
           )
         )
 
-        /*
-            itemCount: dayTasks.length,
-            itemBuilder: (context, index)  {
-              final start = dayTasks[index].start.hour;
-              final end = dayTasks[index].end.hour;
-              final note = dayTasks[index].title;
-              
-           */
-           
+        
         
       ],
     );
@@ -84,10 +76,12 @@ class SchedulePainter extends CustomPainter{
       ..color = Colors.red[400]!
       ..strokeWidth = 1.0
     );
+
+
     //writes the current time above the line
     TextPainter tpain = TextPainter(text:
      TextSpan(
-      text: "${TimeOfDay.now().hour}:${TimeOfDay.now().minute}", 
+      text: "${TimeOfDay.now().hour.toString().padLeft(2, '0')}:${TimeOfDay.now().minute.toString().padLeft(2, '0')}", 
       style: TextStyle(color: Colors.red[500],)
       ),
       textDirection: TextDirection.ltr

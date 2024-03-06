@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:planeringsguru/classes/schedulePainter.dart';
 import 'package:planeringsguru/widgets/Event.dart';
-import 'package:planeringsguru/widgets/daySchedule.dart';
 
 
 
@@ -22,7 +21,6 @@ class WeekSchedule extends StatelessWidget{
         ),
         Positioned.fill(
           child: Event(
-              scheduleData: DaySchedule.getDayTasks(),
           )
         )
 

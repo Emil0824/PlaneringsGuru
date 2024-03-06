@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:planeringsguru/widgets/daySchedule.dart';
+import 'package:planeringsguru/classes/dayEvent.dart';
 
 class  AddEvent extends StatefulWidget {
   @override
@@ -91,7 +91,7 @@ class _AddEventState extends State<AddEvent>{
             ),
             TextButton(
               onPressed: (){
-                DaySchedule.addEvent(_startTime,_duration, _title);
+                DayEvent.addEvent(_startTime,_duration, _title);
                 Navigator.of(context).pop();
               }, 
               child: Text("Skapa")
@@ -141,7 +141,7 @@ class _AddEventState extends State<AddEvent>{
   }
 
 
-
+  
 
   
 }

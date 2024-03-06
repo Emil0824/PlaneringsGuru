@@ -43,7 +43,7 @@ class _DayViewState extends State<DayView> {
               break;
           }
         },
-        indicatorColor: Colors.amber,
+        indicatorColor: Color.fromARGB(255, 201, 164, 108),
         selectedIndex: currentPageIndex,
         destinations: const <Widget>[
           NavigationDestination(

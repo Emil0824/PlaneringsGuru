@@ -10,8 +10,8 @@ class  AddEvent extends StatefulWidget {
 
 class _AddEventState extends State<AddEvent>{
 
-  TimeOfDay _startTime = TimeOfDay.now();
-  TimeOfDay _endTime = TimeOfDay(hour: (TimeOfDay.now().hour + 1) % 24, minute: TimeOfDay.now().minute);
+  DateTime _startTime = DateTime.now();
+  Duration _duration = Duration(hours: 1, minutes: 15);
   String _title = "Ange titel";
 
 
@@ -52,27 +52,26 @@ class _AddEventState extends State<AddEvent>{
                     
                     subtitle: Text("${_startTime.hour}:${_startTime.minute}"),
                     onTap: () async{
-                      final tid = await timePick(true);
+                      final tid = await showDateTimePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime.now());
                       if (tid != null) {
                         setState(() {
                           _startTime = tid;
-                          if (_startTime.hour > _endTime.hour || (_startTime.hour == _endTime.hour && _startTime.minute > _endTime.minute)){
-                            _endTime = TimeOfDay(hour: tid.hour, minute: tid.minute);
-
                           }
-                        });
+                        );
                       }
-                      
+                    
                     },
                   ),
                   ListTile(
-                    title: Text("Slut tid"),
-                    subtitle: Text("${_endTime.hour}:${_endTime.minute}"),
+                    title: Text("Längd"),
+                    subtitle: Text("${_duration.inMinutes} minuits"),
                     onTap: () async{
-                      final tid = await timePick(false);
+                      final tid = await showTimePicker(context: context,initialTime: TimeOfDay(hour: 0, minute: 0),
+                        initialEntryMode: TimePickerEntryMode.inputOnly,
+                        );
                       if (tid != null) {
                         setState(() {
-                          _endTime = tid;
+                          _duration = Duration(hours: tid.hour, minutes: tid.minute);
                           
                         });
                       }
@@ -92,7 +91,7 @@ class _AddEventState extends State<AddEvent>{
             ),
             TextButton(
               onPressed: (){
-                DaySchedule.addEvent(_startTime,_endTime, _title);
+                DaySchedule.addEvent(_startTime,_duration, _title);
                 Navigator.of(context).pop();
               }, 
               child: Text("Skapa")
@@ -104,19 +103,45 @@ class _AddEventState extends State<AddEvent>{
     );
   }
 
-  Future<TimeOfDay?> timePick(bool isStart) async {
-    final tid = await showTimePicker(
-      context: context, 
-      initialTime: isStart ? _startTime : _endTime,
-      builder: (BuildContext context, Widget? child) {
-        return MediaQuery(
-          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-          child: child!,
-        );
-      }
+  Future<DateTime?> showDateTimePicker({
+    required BuildContext context,
+    DateTime? initialDate,
+    DateTime? firstDate,
+    DateTime? lastDate,
+  }) async {
+    initialDate ??= DateTime.now();
+    firstDate ??= initialDate.subtract(const Duration(days: 365 * 100));
+    lastDate ??= firstDate.add(const Duration(days: 365 * 200));
+
+    final DateTime? selectedDate = await showDatePicker(
+      context: context,
+      initialDate: initialDate,
+      firstDate: firstDate,
+      lastDate: lastDate,
     );
 
-    return tid;
+    if (selectedDate == null) return null;
 
+    if (!context.mounted) return selectedDate;
+
+    final TimeOfDay? selectedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.fromDateTime(selectedDate),
+    );
+
+    return selectedTime == null
+    ? selectedDate
+    : DateTime(
+        selectedDate.year,
+        selectedDate.month,
+        selectedDate.day,
+        selectedTime.hour,
+        selectedTime.minute,
+      );
   }
+
+
+
+
+  
 }

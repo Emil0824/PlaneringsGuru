@@ -1,10 +1,21 @@
 import 'package:flutter/material.dart';
 
 class DayEvent{
-  TimeOfDay start;
-  TimeOfDay end;
-  String title;
 
-  DayEvent({required this.start, required this.end, required this.title});
+
+
+  late DateTimeRange date;
+  String title;
   
+  DayEvent({required DateTime start, required Duration dutration, required this.title}){
+    date = DateTimeRange(
+      start: start,
+      end: start.add(dutration)
+    );
+  }
+    
+  
+  
+
+
 }

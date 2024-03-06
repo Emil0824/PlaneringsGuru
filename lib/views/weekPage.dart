@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:planeringsguru/widgets/addEvent.dart';
 import 'package:planeringsguru/widgets/daySchedule.dart';
+import 'package:planeringsguru/widgets/weekAppbar.dart';
+import 'package:planeringsguru/widgets/weekSchedule.dart';
 
 class WeekView extends StatefulWidget {
 
@@ -16,7 +18,8 @@ class _WeekViewState extends State<WeekView> {
 
 
     return Scaffold(
-        bottomNavigationBar: NavigationBar(
+      
+        bottomNavigationBar: NavigationBar(     //export to separete class
         onDestinationSelected: (int index) {
           setState(() {
             currentPageIndex = index;
@@ -40,7 +43,7 @@ class _WeekViewState extends State<WeekView> {
               break;
           }
         },
-        indicatorColor: Colors.amber,
+        indicatorColor: Color.fromARGB(255, 201, 164, 108),  //UCfix
         selectedIndex: currentPageIndex,
         destinations: const <Widget>[
           NavigationDestination(
@@ -65,8 +68,31 @@ class _WeekViewState extends State<WeekView> {
           ),
         ],
       ),
-        body: DaySchedule(),
+        body: WeekSchedule(),
         floatingActionButton: AddEvent(),
-    );
+        appBar: CustomAppBar(),
+        /*
+        appBar: AppBar(
+          backgroundColor: Color.fromARGB(255, 201, 164, 108), //UCfix
+          
+          title: Row(
+            children: [
+              Text(""),
+              Text("M"),
+              Text("T"),
+              Text("O"),
+              Text("T"),
+              Text("F"),
+              Text("L"),
+              Text("S"),
+              
+            ],
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            
+          ),
+          ),
+          */
+        );
+    
   }
 }

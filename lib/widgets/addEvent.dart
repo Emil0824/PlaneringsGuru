@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:planeringsguru/classes/algotithm.dart';
 import 'package:planeringsguru/classes/dayEvent.dart';
 
 class  AddEvent extends StatefulWidget {
+  final Function callbackFunction;
+
+  AddEvent({Key? key, required this.callbackFunction}) : super(key: key);
+
   @override
-  _AddEventState createState() => _AddEventState();
+  _AddEventState createState() => _AddEventState(callbackFunction: callbackFunction);
 
 }
 
 
 class _AddEventState extends State<AddEvent>{
+  final Function callbackFunction;
+  _AddEventState({required this.callbackFunction});
 
   DateTime _startTime = DateTime.now();
   Duration _duration = Duration(hours: 1, minutes: 15);
@@ -46,7 +53,7 @@ class _AddEventState extends State<AddEvent>{
                         _title = value;
                       },
                     )
-                  ),
+                  ),  /*
                   ListTile(
                     title: Text("Start tid"),
                     
@@ -59,12 +66,11 @@ class _AddEventState extends State<AddEvent>{
                           }
                         );
                       }
-                    
                     },
-                  ),
+                  ),*/
                   ListTile(
                     title: Text("Längd"),
-                    subtitle: Text("${_duration.inMinutes} minuits"),
+                    subtitle: Text("${_duration.inMinutes} minuter"),
                     onTap: () async{
                       final tid = await showTimePicker(context: context,initialTime: TimeOfDay(hour: 0, minute: 0),
                         initialEntryMode: TimePickerEntryMode.inputOnly,
@@ -75,13 +81,13 @@ class _AddEventState extends State<AddEvent>{
                           
                         });
                       }
-                      
                     },
                   ),
                 ]
               );
             }
           ),
+          actionsAlignment: MainAxisAlignment.center,
           actions: [
             TextButton(
               onPressed: () {
@@ -90,8 +96,15 @@ class _AddEventState extends State<AddEvent>{
               child: Text("Avbryt"),
             ),
             TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/advancedPlan');
+              },
+              child: Text("Advancerad"),
+            ),
+            TextButton(
               onPressed: (){
-                DayEvent.addEvent(_startTime,_duration, _title);
+                Algorithm.planEvent(_title, _duration);
+                callbackFunction();
                 Navigator.of(context).pop();
               }, 
               child: Text("Skapa")
@@ -103,45 +116,4 @@ class _AddEventState extends State<AddEvent>{
     );
   }
 
-  Future<DateTime?> showDateTimePicker({
-    required BuildContext context,
-    DateTime? initialDate,
-    DateTime? firstDate,
-    DateTime? lastDate,
-  }) async {
-    initialDate ??= DateTime.now();
-    firstDate ??= initialDate.subtract(const Duration(days: 365 * 100));
-    lastDate ??= firstDate.add(const Duration(days: 365 * 200));
-
-    final DateTime? selectedDate = await showDatePicker(
-      context: context,
-      initialDate: initialDate,
-      firstDate: firstDate,
-      lastDate: lastDate,
-    );
-
-    if (selectedDate == null) return null;
-
-    if (!context.mounted) return selectedDate;
-
-    final TimeOfDay? selectedTime = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.fromDateTime(selectedDate),
-    );
-
-    return selectedTime == null
-    ? selectedDate
-    : DateTime(
-        selectedDate.year,
-        selectedDate.month,
-        selectedDate.day,
-        selectedTime.hour,
-        selectedTime.minute,
-      );
-  }
-
-
-  
-
-  
 }

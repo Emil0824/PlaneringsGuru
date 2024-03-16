@@ -12,6 +12,14 @@ class DayView extends StatefulWidget {
 }
 
 class _DayViewState extends State<DayView> {
+
+  callback(){
+    setState(() {
+      
+    });
+  }
+
+
   int currentPageIndex = 1;
 
   @override
@@ -69,7 +77,7 @@ class _DayViewState extends State<DayView> {
         ],
       ),
         body: DaySchedule(),
-        floatingActionButton: AddEvent(),
+        floatingActionButton: AddEvent(callbackFunction: callback),
     );
   }
 }

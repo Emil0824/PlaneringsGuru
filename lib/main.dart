@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:planeringsguru/views/advancedPlanner.dart';
 import 'package:planeringsguru/views/dayPage.dart';
 import 'package:planeringsguru/views/weekPage.dart';
 
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
         '/week': (context) => WeekView(),
         //'/month': (context) => MonthPage(),
         //'/account': (context) => AccountPage(),
+        '/advancedPlan':(context) => AdvancedPlanner(),
       },
       //home: const MyHomePage(title: 'Dags Vy'),
     );

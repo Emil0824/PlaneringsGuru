@@ -10,6 +10,15 @@ class WeekView extends StatefulWidget {
 }
 
 class _WeekViewState extends State<WeekView> {
+
+  //callback function to update page
+  callback(){
+    setState(() {
+      
+    });
+  }
+
+
   int currentPageIndex = 2;
 
   @override
@@ -68,7 +77,7 @@ class _WeekViewState extends State<WeekView> {
         ],
       ),
         body: WeekSchedule(),
-        floatingActionButton: AddEvent(),
+        floatingActionButton: AddEvent(callbackFunction: callback),
         appBar: CustomAppBar(),
         );
     

@@ -3,10 +3,8 @@ import 'package:planeringsguru/classes/dayEvent.dart';
 
 
 class Event extends StatelessWidget {
-  final List<DayEvent> scheduleData = DayEvent.events;
-  Event();
+  final List<DayEvent> scheduleData = DayEvent.getEvents();
   
-
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -41,7 +39,7 @@ class Event extends StatelessWidget {
     List<Positioned> events = [];
 
 
-    for (int i = 0; i < 7 - currentDayofWeek; i++){
+    for (int i = 0; i <= 7 - currentDayofWeek; i++){
       
       events += (getPositionedStuff(hourHight,minuteHeight,maxWidth,context, DateTime.now().add(Duration(days: i)), DateTime.now().add(Duration(days: i)).weekday.toDouble()));
     }

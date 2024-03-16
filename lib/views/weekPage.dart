@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:planeringsguru/widgets/addEvent.dart';
-import 'package:planeringsguru/widgets/daySchedule.dart';
 import 'package:planeringsguru/widgets/weekAppbar.dart';
 import 'package:planeringsguru/widgets/weekSchedule.dart';
 
@@ -71,27 +70,6 @@ class _WeekViewState extends State<WeekView> {
         body: WeekSchedule(),
         floatingActionButton: AddEvent(),
         appBar: CustomAppBar(),
-        /*
-        appBar: AppBar(
-          backgroundColor: Color.fromARGB(255, 201, 164, 108), //UCfix
-          
-          title: Row(
-            children: [
-              Text(""),
-              Text("M"),
-              Text("T"),
-              Text("O"),
-              Text("T"),
-              Text("F"),
-              Text("L"),
-              Text("S"),
-              
-            ],
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            
-          ),
-          ),
-          */
         );
     
   }

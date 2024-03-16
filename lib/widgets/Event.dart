@@ -3,8 +3,8 @@ import 'package:planeringsguru/classes/dayEvent.dart';
 
 
 class Event extends StatelessWidget {
-  final List<DayEvent> scheduleData;
-  Event({required this.scheduleData});
+  final List<DayEvent> scheduleData = DayEvent.events;
+  Event();
   
 
   @override

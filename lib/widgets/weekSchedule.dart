@@ -20,8 +20,7 @@ class WeekSchedule extends StatelessWidget{
           )
         ),
         Positioned.fill(
-          child: Event(
-          )
+          child: Event(currentPage: "week")
         )
 
       ],

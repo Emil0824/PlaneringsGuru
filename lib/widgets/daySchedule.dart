@@ -10,9 +10,6 @@ class DaySchedule extends StatefulWidget {
   @override
   State<DaySchedule> createState() => _DaySchedule();
 
-
-  
-
 }
 
 
@@ -31,8 +28,7 @@ class _DaySchedule extends State<DaySchedule>{
           )
         ),
         Positioned.fill(
-          child: Event(
-          )
+          child: Event(currentPage: "day")
         )
 
         

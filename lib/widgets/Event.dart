@@ -4,6 +4,10 @@ import 'package:planeringsguru/classes/dayEvent.dart';
 
 class Event extends StatelessWidget {
   final List<DayEvent> scheduleData = DayEvent.getEvents();
+
+  final currentPage;
+
+  Event({required this.currentPage});
   
   @override
   Widget build(BuildContext context) {
@@ -16,12 +20,12 @@ class Event extends StatelessWidget {
         final minuteHeight = hourHight / 60;
 
 
-        if (ModalRoute.of(context)?.settings.name == "/week"){
+        if (currentPage == "week"){
           return Stack(
             children: getWeekPositions(hourHight, minuteHeight, maxWidth, context)
           );
         }
-        else if (ModalRoute.of(context)?.settings.name == "/day"){
+        else if (currentPage == "day"){
           return Stack(
             children: getPositionedStuff(hourHight, minuteHeight, maxWidth, context, DateTime.now(), -1)
           );

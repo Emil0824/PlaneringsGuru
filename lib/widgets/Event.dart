@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:planeringsguru/classes/dayEvent.dart';
+import 'package:planeringsguru/classes/globalDesign.dart';
 
 
 class Event extends StatelessWidget {
@@ -84,9 +85,9 @@ class Event extends StatelessWidget {
             width: totalWidth,
             child: Container(
               decoration: BoxDecoration(
-                color: Color.fromRGBO(10, 10, 100, 120),
+                color: GlobalDesign.event,
                 borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                border: Border.all(color: Color.fromRGBO(10, 10, 100, 1)),  //UCfix
+                border: Border.all(color:GlobalDesign.eventBorder),
               ),
               width: 100,
               
@@ -95,8 +96,8 @@ class Event extends StatelessWidget {
                   Container(
         
                     decoration: BoxDecoration(
-                      color: Color.fromRGBO(221, 221, 255, 1),  //UCfix
-                      borderRadius: BorderRadius.vertical(top: Radius.circular(5.0)),
+                      color: GlobalDesign.eventBox,
+                      borderRadius: const BorderRadius.vertical(top: Radius.circular(5.0)),
                     ),   
                     
                     height: 30,

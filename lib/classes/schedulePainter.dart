@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:planeringsguru/classes/globalDesign.dart';
 
 
 
@@ -14,7 +15,7 @@ class SchedulePainter extends CustomPainter{
 
     //create a brush
     final Paint paint = Paint()
-    ..color = Colors.grey[400]!
+    ..color = Colors.grey[400]!   //UCfix
     ..strokeWidth = 1.0;
 
     //height for each space between
@@ -23,7 +24,7 @@ class SchedulePainter extends CustomPainter{
     //Draws the line for the current time
     final double nowOffset = spaceBetween * (TimeOfDay.now().hour - 8) + spaceBetween/60*TimeOfDay.now().minute;
     canvas.drawLine(Offset(0, nowOffset), Offset(size.width, nowOffset), Paint()
-      ..color = Colors.red[400]!  //UCfix
+      ..color = GlobalDesign.timeLine
       ..strokeWidth = 1.0
     );
 
@@ -32,7 +33,7 @@ class SchedulePainter extends CustomPainter{
     TextPainter tpain = TextPainter(text:
      TextSpan(
       text: "${TimeOfDay.now().hour.toString().padLeft(2, '0')}:${TimeOfDay.now().minute.toString().padLeft(2, '0')}", 
-      style: TextStyle(color: Colors.red[500],) //UCfix
+      style: TextStyle(color: GlobalDesign.timeLine,)
       ),
       textDirection: TextDirection.ltr
     );
@@ -57,7 +58,7 @@ class SchedulePainter extends CustomPainter{
       TextPainter tp = TextPainter(
         text: TextSpan(
           text: '${(i + 8).toString().padLeft(2, '0')}:00',
-          style: TextStyle(color: Colors.grey[500]),  //UCfix
+          style: TextStyle(color: GlobalDesign.lines),
         ),
         textDirection: TextDirection.ltr
       );

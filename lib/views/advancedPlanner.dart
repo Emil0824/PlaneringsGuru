@@ -68,7 +68,7 @@ class _AdvancedPlannerState extends State<AdvancedPlanner> {
             TextButton(
               onPressed: (){
                   DayEvent.addEvent(_startTime, _duration, _title, false);
-                  Navigator.pushNamed(context, '/week');
+                  Navigator.pop(context);
                 },
               child: Text("Skapa")
               )

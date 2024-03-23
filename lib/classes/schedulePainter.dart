@@ -19,10 +19,10 @@ class SchedulePainter extends CustomPainter{
     ..strokeWidth = 1.0;
 
     //height for each space between
-    final double spaceBetween = size.height / 12;
+    final double spaceBetween = size.height / 24;
 
     //Draws the line for the current time
-    final double nowOffset = spaceBetween * (TimeOfDay.now().hour - 8) + spaceBetween/60*TimeOfDay.now().minute;
+    final double nowOffset = spaceBetween * (TimeOfDay.now().hour) + spaceBetween/60*TimeOfDay.now().minute;
     canvas.drawLine(Offset(0, nowOffset), Offset(size.width, nowOffset), Paint()
       ..color = GlobalDesign.timeLine
       ..strokeWidth = 1.0
@@ -46,7 +46,7 @@ class SchedulePainter extends CustomPainter{
     //tpain.paint(canvas, Offset(size.width - tpain.width- 10, nowOffset - tpain.height));         //Looks really nice on day shit on week
     
     //drawing horizontal lines for each hour
-    for (int i = 1; i <= 12; i++) {
+    for (int i = 1; i <= 24; i++) {
       final y = i * spaceBetween;
 
 
@@ -57,7 +57,7 @@ class SchedulePainter extends CustomPainter{
 
       TextPainter tp = TextPainter(
         text: TextSpan(
-          text: '${(i + 8).toString().padLeft(2, '0')}:00',
+          text: '${(i).toString().padLeft(2, '0')}:00',
           style: TextStyle(color: GlobalDesign.lines),
         ),
         textDirection: TextDirection.ltr

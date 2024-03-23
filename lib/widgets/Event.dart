@@ -17,7 +17,7 @@ class Event extends StatelessWidget {
 
         final double maxWidth = constraints.maxWidth;
 
-        final hourHight = constraints.maxHeight / 12;
+        final hourHight = constraints.maxHeight / 24;
         final minuteHeight = hourHight / 60;
 
 
@@ -79,11 +79,15 @@ class Event extends StatelessWidget {
       if(element.date.start.day == today.day && element.date.start.month == today.month && element.date.start.year == today.year){
         events.add(
         Positioned(
-            top:(hourHight * (element.date.start.hour - 8 )) + (minuteHeight * element.date.start.minute),
+            top:(hourHight * (element.date.start.hour)) + (minuteHeight * element.date.start.minute),
             height: minuteHeight * element.date.duration.inMinutes,
             left: totalOffset,
             width: totalWidth,
             child: Container(
+              
+              
+
+
               decoration: BoxDecoration(
                 color: GlobalDesign.event,
                 borderRadius: BorderRadius.all(Radius.circular(5.0)),
@@ -94,6 +98,7 @@ class Event extends StatelessWidget {
               child: Column(
                 children: [
                   Container(
+
         
                     decoration: BoxDecoration(
                       color: GlobalDesign.eventBox,

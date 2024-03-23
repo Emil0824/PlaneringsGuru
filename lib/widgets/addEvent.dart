@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:planeringsguru/classes/algotithm.dart';
 import 'package:planeringsguru/classes/dayEvent.dart';
+import 'package:planeringsguru/views/advancedPlanner.dart';
 
 class  AddEvent extends StatefulWidget {
   final Function callbackFunction;
@@ -97,7 +98,9 @@ class _AddEventState extends State<AddEvent>{
             ),
             TextButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/advancedPlan');
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => AdvancedPlanner(),
+                  ));
               },
               child: Text("Advancerad"),
             ),

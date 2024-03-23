@@ -64,7 +64,8 @@ class _MyHomePageState extends State<MyHomePage> {
           DayView(),
           WeekView(),
           DayView(),
-          AdvancedPlanner(),
+          DayView(),
+          
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

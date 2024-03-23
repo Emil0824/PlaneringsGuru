@@ -75,7 +75,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       Container(
         width: MediaQuery.of(context).size.width / 8,
         child:Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(DateFormat.MMM().format(DateTime.now()), textScaleFactor: 1.3), //Hard coded i fix later bc lazy
             Text("v$week", textScaleFactor: 1.3)
@@ -96,8 +96,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(days[i].toString(), textScaleFactor: 1.1),
-            Text(weekDays[i], textScaleFactor: 1.1),
+            Text(days[i].toString(), textScaleFactor: 1.3),
+            Text(weekDays[i], textScaleFactor: 1.3),
           ],
         )
       );

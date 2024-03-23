@@ -75,12 +75,20 @@ class Event extends StatelessWidget {
     }
 
     scheduleData.forEach((element) {
-
       if(element.date.start.day == today.day && element.date.start.month == today.month && element.date.start.year == today.year){
+
+        double totHeight = minuteHeight * element.date.duration.inMinutes;
+
+        Color eventC = GlobalDesign.event;
+
+        if (element.isAuto){
+          eventC = GlobalDesign.looseEvent;
+        }
+
         events.add(
         Positioned(
             top:(hourHight * (element.date.start.hour)) + (minuteHeight * element.date.start.minute),
-            height: minuteHeight * element.date.duration.inMinutes,
+            height: totHeight,
             left: totalOffset,
             width: totalWidth,
             child: Container(
@@ -89,32 +97,14 @@ class Event extends StatelessWidget {
 
 
               decoration: BoxDecoration(
-                color: GlobalDesign.event,
+                color: eventC,
                 borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                border: Border.all(color:GlobalDesign.eventBorder),
+                border: Border.all(color: GlobalDesign.eventBorder),
               ),
               width: 100,
               
               child: Column(
-                children: [
-                  Container(
-
-        
-                    decoration: BoxDecoration(
-                      color: GlobalDesign.eventBox,
-                      borderRadius: const BorderRadius.vertical(top: Radius.circular(5.0)),
-                    ),   
-                    
-                    height: 30,
-                    width: 100,
-                    child: Center(
-                      child: Text(
-                        element.title,
-                                    
-                      ),
-                    )
-                  ),
-                ]
+                children: checkHeight(totHeight, element.title)
               ),
             )
           ),
@@ -127,5 +117,49 @@ class Event extends StatelessWidget {
     return events;
 
     
+  }
+
+
+
+  List<Container> checkHeight(height, title) {
+    if (height > 50) {
+      
+      return [
+        Container(
+          decoration: BoxDecoration(
+            color: GlobalDesign.eventBox,
+            borderRadius:
+                const BorderRadius.vertical(top: Radius.circular(5.0)),
+          ),
+          height: 30,
+          width: 100,
+          child: Center(
+            child: Text(
+              CheckText(title),
+            ),
+          )
+        )
+      ];
+    }
+    else{
+      return [];
+    }
+  }
+
+
+  String CheckText(String title){
+    String newTitle;
+
+    if(currentPage == "week" && title.length > 4){
+      newTitle = "${title.substring(0, 4)}..";
+    }
+    else if(currentPage == "day" && title.length > 8){
+      newTitle = "${title.substring(0, 8)}..";
+    }
+    else{
+      newTitle = title;
+    }
+
+    return newTitle;
   }
 }

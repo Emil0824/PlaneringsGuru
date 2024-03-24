@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:planeringsguru/classes/choosenDay.dart';
 import 'package:planeringsguru/classes/schedulePainter.dart';
 import 'package:planeringsguru/widgets/Event.dart';
 
 
 
 class DaySchedule extends StatefulWidget {
-  const DaySchedule({Key? key}) : super(key: key);
+
+  DaySchedule({Key? key}) : super(key: key);
+  
+  
 
   @override
   State<DaySchedule> createState() => _DaySchedule();
@@ -17,16 +21,19 @@ class DaySchedule extends StatefulWidget {
 class _DaySchedule extends State<DaySchedule>{
 
   var list = [for(var i=8; i<21; i+=1) i];
+  DateTime choosenDay = ChoosenDay.choosenDay;
 
   
-
+  _DaySchedule();
 
   @override
   Widget build(BuildContext context) {
+
+
     double size = MediaQuery.sizeOf(context).height * 2;
 
-    double spaceBetween = size / 12;
-    double nowOffset = spaceBetween * (TimeOfDay.now().hour - 8) + spaceBetween/60*TimeOfDay.now().minute;
+    double spaceBetween = size / 24;
+    double nowOffset = spaceBetween * (TimeOfDay.now().hour) + spaceBetween/60*TimeOfDay.now().minute;
 
     nowOffset = nowOffset - (MediaQuery.sizeOf(context).height / 4);
 
@@ -56,7 +63,9 @@ class _DaySchedule extends State<DaySchedule>{
                       )
                     ),
                     Positioned.fill(
-                      child: Event(currentPage: "day")
+                      child: Event(
+                        currentPage: "day",
+                      )
                     )
                   ],
                 ),

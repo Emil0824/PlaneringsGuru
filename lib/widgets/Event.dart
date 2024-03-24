@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:planeringsguru/classes/choosenDay.dart';
 import 'package:planeringsguru/classes/dayEvent.dart';
 import 'package:planeringsguru/classes/globalDesign.dart';
 
@@ -7,11 +8,11 @@ class Event extends StatelessWidget {
   final List<DayEvent> scheduleData = DayEvent.getEvents();
 
   final currentPage;
-
   Event({required this.currentPage});
   
   @override
   Widget build(BuildContext context) {
+
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
 
@@ -28,7 +29,7 @@ class Event extends StatelessWidget {
         }
         else if (currentPage == "day"){
           return Stack(
-            children: getPositionedStuff(hourHight, minuteHeight, maxWidth, context, DateTime.now(), -1)
+            children: getPositionedStuff(hourHight, minuteHeight, maxWidth, context, ChoosenDay.choosenDay, -1)
           );
         }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:planeringsguru/views/advancedPlanner.dart';
 import 'package:planeringsguru/views/dayPage.dart';
+import 'package:planeringsguru/views/monthPage.dart';
 import 'package:planeringsguru/views/weekPage.dart';
 
 void main() {
@@ -63,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
           DayView(),
           DayView(),
           WeekView(),
-          DayView(),
+          MonthView(),
           DayView(),
           
         ],

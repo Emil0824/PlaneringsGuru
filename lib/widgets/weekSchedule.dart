@@ -11,8 +11,8 @@ class WeekSchedule extends StatelessWidget{
 
     double size = MediaQuery.sizeOf(context).height * 2;
 
-    double spaceBetween = size / 12;
-    double nowOffset = spaceBetween * (TimeOfDay.now().hour - 8) + spaceBetween/60*TimeOfDay.now().minute;
+    double spaceBetween = size / 24;
+    double nowOffset = spaceBetween * (TimeOfDay.now().hour) + spaceBetween/60*TimeOfDay.now().minute;
 
     nowOffset = nowOffset - (MediaQuery.sizeOf(context).height / 4);
 

@@ -1,24 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:planeringsguru/classes/algotithm.dart';
-import 'package:planeringsguru/classes/dayEvent.dart';
 import 'package:planeringsguru/views/advancedPlanner.dart';
+
 
 class  AddEvent extends StatefulWidget {
   final Function callbackFunction;
 
   AddEvent({Key? key, required this.callbackFunction}) : super(key: key);
 
+
   @override
-  _AddEventState createState() => _AddEventState(callbackFunction: callbackFunction);
+  _AddEventState createState() => _AddEventState(
+    callbackFunction: callbackFunction,
+  );
 
 }
 
 
 class _AddEventState extends State<AddEvent>{
   final Function callbackFunction;
+  
+
   _AddEventState({required this.callbackFunction});
 
-  DateTime _startTime = DateTime.now();
   Duration _duration = Duration(hours: 1, minutes: 15);
   String _title = "Ange titel";
 

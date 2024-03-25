@@ -1,6 +1,8 @@
 
 
 
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:planeringsguru/widgets/addEvent.dart';
 import 'package:planeringsguru/widgets/daySchedule.dart';
@@ -8,6 +10,8 @@ import 'package:planeringsguru/widgets/daySchedule.dart';
 import 'package:planeringsguru/widgets/dayAppbar.dart';
 
 class DayView extends StatefulWidget {
+  const DayView({super.key});
+
   
   @override
   State<DayView> createState() => _DayViewState();

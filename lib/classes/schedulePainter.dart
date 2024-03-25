@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:planeringsguru/classes/globalDesign.dart';
 
@@ -81,7 +83,7 @@ class SchedulePainter extends CustomPainter{
 
       }
 
-      canvas.drawLine(Offset(0, 0), Offset(size.width, 0), paint);
+      canvas.drawLine(const Offset(0, 0), Offset(size.width, 0), paint);
     }
 
    

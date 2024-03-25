@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, avoid_function_literals_in_foreach_calls, prefer_typing_uninitialized_variables, file_names
+
 import 'package:flutter/material.dart';
 import 'package:planeringsguru/classes/choosenDay.dart';
 import 'package:planeringsguru/classes/dayEvent.dart';
@@ -8,7 +10,7 @@ class Event extends StatelessWidget {
   final List<DayEvent> scheduleData = DayEvent.getEvents();
 
   final currentPage;
-  Event({required this.currentPage});
+  Event({super.key, required this.currentPage});
   
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,7 @@ class Event extends StatelessWidget {
         }
 
 
-        return Text("error");
+        return const Text("error");
       }
     );
   }
@@ -99,7 +101,7 @@ class Event extends StatelessWidget {
 
               decoration: BoxDecoration(
                 color: eventC,
-                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                borderRadius: const BorderRadius.all(Radius.circular(5.0)),
                 border: Border.all(color: GlobalDesign.eventBorder),
               ),
               width: 100,

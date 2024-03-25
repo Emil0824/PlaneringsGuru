@@ -1,4 +1,6 @@
 
+// ignore_for_file: sized_box_for_whitespace, file_names
+
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
@@ -26,7 +28,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  // TODO: implement preferredSize
   Size get preferredSize => const Size(double.maxFinite, 80);
 
   int numOfWeeks(int year) {

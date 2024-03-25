@@ -1,9 +1,13 @@
+// ignore_for_file: sized_box_for_whitespace, file_names
+
 import 'package:flutter/material.dart';
 import 'package:planeringsguru/classes/schedulePainter.dart';
 import 'package:planeringsguru/widgets/Event.dart';
 
 
 class WeekSchedule extends StatelessWidget{
+  const WeekSchedule({super.key});
+
   
 
   @override

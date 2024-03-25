@@ -1,3 +1,5 @@
+// ignore_for_file: sized_box_for_whitespace, prefer_const_constructors_in_immutables, file_names
+
 import 'package:flutter/material.dart';
 import 'package:planeringsguru/classes/choosenDay.dart';
 import 'package:planeringsguru/classes/schedulePainter.dart';

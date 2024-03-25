@@ -1,3 +1,6 @@
+
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 
 class DayEvent{
@@ -9,9 +12,9 @@ class DayEvent{
 
   //list of all personaly planned events
   static List<DayEvent> events = [
-    DayEvent(start: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 13, 0), duration: Duration(hours:1, minutes: 15), title: "tes1", isAuto: false),
-    DayEvent(start: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 16, 0), duration: Duration(hours:1, minutes: 15), title: "tes2", isAuto: true),
-    DayEvent(start: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 12, 0).add(Duration(days: 1)), duration: Duration(hours:1, minutes: 15), title: "tes3", isAuto: true),
+    DayEvent(start: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 13, 0), duration: const Duration(hours:1, minutes: 15), title: "tes1", isAuto: false),
+    DayEvent(start: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 16, 0), duration: const Duration(hours:1, minutes: 15), title: "tes2", isAuto: true),
+    DayEvent(start: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 12, 0).add(const Duration(days: 1)), duration: const Duration(hours:1, minutes: 15), title: "tes3", isAuto: true),
   ];
 
 

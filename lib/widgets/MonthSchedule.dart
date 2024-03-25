@@ -1,7 +1,11 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class MonthSchedule extends StatefulWidget{
+  const MonthSchedule({super.key});
+
 
 
   @override
@@ -39,7 +43,7 @@ DateTime? _selectedDay;
                 _focusedDay = focusedDay;
               },
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
         ]
       ),
     );

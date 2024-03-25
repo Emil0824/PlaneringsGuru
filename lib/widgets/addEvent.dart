@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, prefer_const_constructors, no_logic_in_create_state, library_private_types_in_public_api, prefer_const_constructors_in_immutables
+
 import 'package:flutter/material.dart';
 import 'package:planeringsguru/classes/algotithm.dart';
 import 'package:planeringsguru/views/advancedPlanner.dart';
@@ -43,14 +45,14 @@ class _AddEventState extends State<AddEvent>{
       context: context, 
       builder: (BuildContext context) {  
         return AlertDialog(
-          title: Text("Välj start och slut tid!"),
+          title: const Text("Välj start och slut tid!"),
           content: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {           
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   ListTile(
-                    title: Text("Titel"),
+                    title: const Text("Titel"),
                     subtitle: TextField(
                       autofocus: true,
                       textAlign: TextAlign.center,
@@ -74,7 +76,7 @@ class _AddEventState extends State<AddEvent>{
                     },
                   ),*/
                   ListTile(
-                    title: Text("Längd"),
+                    title: const Text("Längd"),
                     subtitle: Text("${_duration.inMinutes} minuter"),
                     onTap: () async{
                       final tid = await showTimePicker(context: context,initialTime: TimeOfDay(hour: 0, minute: 0),
@@ -98,7 +100,7 @@ class _AddEventState extends State<AddEvent>{
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text("Avbryt"),
+              child: const Text("Avbryt"),
             ),
             TextButton(
               onPressed: () {
@@ -106,7 +108,7 @@ class _AddEventState extends State<AddEvent>{
                   builder: (context) => AdvancedPlanner(),
                   ));
               },
-              child: Text("Advancerad"),
+              child: const Text("Advancerad"),
             ),
             TextButton(
               onPressed: (){
@@ -114,7 +116,7 @@ class _AddEventState extends State<AddEvent>{
                 callbackFunction();
                 Navigator.of(context).pop();
               }, 
-              child: Text("Skapa")
+              child: const Text("Skapa")
             ),
           ],
         );

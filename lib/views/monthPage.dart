@@ -1,9 +1,13 @@
 
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:planeringsguru/widgets/MonthSchedule.dart';
 import 'package:planeringsguru/widgets/addEvent.dart';
 
 class MonthView extends StatefulWidget {
+  const MonthView({super.key});
+
 
   @override
   State<MonthView> createState() => _MonthViewState();

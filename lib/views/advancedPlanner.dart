@@ -1,8 +1,12 @@
+// ignore_for_file: file_names, no_leading_underscores_for_local_identifiers, prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:planeringsguru/classes/dayEvent.dart';
 
 
 class AdvancedPlanner extends StatefulWidget {
+  const AdvancedPlanner({super.key});
+
 
   @override
   State<AdvancedPlanner> createState() => _AdvancedPlannerState();
@@ -14,7 +18,6 @@ class _AdvancedPlannerState extends State<AdvancedPlanner> {
     DateTime _startTime = DateTime.now();
     Duration _duration = Duration(hours: 1, minutes: 15);
     String _title = "Ange titel";
-    int currentPageIndex = 2;
     
 
 
@@ -27,7 +30,7 @@ class _AdvancedPlannerState extends State<AdvancedPlanner> {
           return Column(
           children: [
             ListTile(
-              title: Text("Titel"),
+              title: const Text("Titel"),
               subtitle: TextField(
                 autofocus: true,
                 textAlign: TextAlign.center,
@@ -37,7 +40,7 @@ class _AdvancedPlannerState extends State<AdvancedPlanner> {
               )
             ),  
             ListTile(
-              title: Text("Start tid"),
+              title: const Text("Start tid"),
               
               subtitle: Text("${_startTime.hour}:${_startTime.minute}"),
               onTap: () async{
@@ -51,7 +54,7 @@ class _AdvancedPlannerState extends State<AdvancedPlanner> {
               },
             ),
             ListTile(
-              title: Text("Längd"),
+              title: const Text("Längd"),
               subtitle: Text("${_duration.inMinutes} minuter"),
               onTap: () async{
                 final tid = await showTimePicker(context: context,initialTime: TimeOfDay(hour: 0, minute: 0),
@@ -70,7 +73,7 @@ class _AdvancedPlannerState extends State<AdvancedPlanner> {
                   DayEvent.addEventFields(_startTime, _duration, _title, false);
                   Navigator.pop(context);
                 },
-              child: Text("Skapa")
+              child: const Text("Skapa")
               )
           ],
         );

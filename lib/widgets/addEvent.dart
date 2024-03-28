@@ -45,7 +45,7 @@ class _AddEventState extends State<AddEvent>{
       context: context, 
       builder: (BuildContext context) {  
         return AlertDialog(
-          title: const Text("Välj start och slut tid!"),
+          title: const Text("Välj Titel och Längd"),
           content: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {           
               return Column(

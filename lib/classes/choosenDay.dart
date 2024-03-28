@@ -12,7 +12,8 @@ class ChoosenDay{
 
   static change(DateTime day){
     choosenDay = day;
+    print("choosenDay: " + choosenDay.toString());
   }
 
-
+  
 }

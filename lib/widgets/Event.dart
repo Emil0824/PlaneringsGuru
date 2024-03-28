@@ -43,19 +43,21 @@ class Event extends StatelessWidget {
 
 
   List<Positioned> getWeekPositions(hourHight, minuteHeight, maxWidth, context){
-    int currentDayofWeek = DateTime.now().weekday;
+    int currentDayofWeek = ChoosenDay.choosenDay.weekday;
+
+    
     List<Positioned> events = [];
 
 
     for (int i = 0; i <= 7 - currentDayofWeek; i++){
       
-      events += (getPositionedStuff(hourHight,minuteHeight,maxWidth,context, DateTime.now().add(Duration(days: i)), DateTime.now().add(Duration(days: i)).weekday.toDouble()));
+      events += (getPositionedStuff(hourHight,minuteHeight,maxWidth,context, ChoosenDay.choosenDay.add(Duration(days: i)), ChoosenDay.choosenDay.add(Duration(days: i)).weekday.toDouble()));
+
     }
 
     for (int i = 1; i < currentDayofWeek; i++){
       
-      events += (getPositionedStuff(hourHight,minuteHeight,maxWidth,context, DateTime.now().subtract(Duration(days: i)), DateTime.now().add(Duration(days: i)).weekday.toDouble()));
-
+      events += (getPositionedStuff(hourHight,minuteHeight,maxWidth,context, ChoosenDay.choosenDay.subtract(Duration(days: i)), ChoosenDay.choosenDay.subtract(Duration(days: i)).weekday.toDouble()));
     }
   
     return events;

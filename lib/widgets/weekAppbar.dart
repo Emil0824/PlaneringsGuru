@@ -1,34 +1,67 @@
 
 // ignore_for_file: sized_box_for_whitespace, file_names
 
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:planeringsguru/classes/choosenDay.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar({
-    Key? key,
-  }) : super(key: key);
+  final Function callbackFunction;
+
+
+  const CustomAppBar({Key? key, required this.callbackFunction}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    DateTime displayDay = ChoosenDay.choosenDay;
+    final int week = weekNumber(displayDay);
     return SafeArea(
         left: false,
         right: false,
+      
         child: Stack(children: [
           
+          
           Positioned.fill(
-            top: 20,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: getDaysAndStuff(context),
-              
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                  IconButton(
+                    onPressed: () => {
+                      ChoosenDay.change(displayDay.subtract(const Duration(days: 7))),
+                      callbackFunction()
+                    }, 
+                    icon: const Icon(Icons.arrow_left)
+                  ),
+                  Text("v$week", textScaleFactor: 1.3),
+                  IconButton(
+                    onPressed: () => { 
+                      ChoosenDay.change(displayDay.add(const Duration(days: 7))),
+                      callbackFunction()
+                    }, 
+                    icon: const Icon(Icons.arrow_right)
+                    )
+                  ]
+                  
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: getDaysAndStuff(context),
+                  
+                ),
+              ],
             ),
-          )
+          ),
+          
+
         ]));
   }
 
   @override
-  Size get preferredSize => const Size(double.maxFinite, 80);
+  Size get preferredSize => const Size(double.maxFinite, 100);
 
   int numOfWeeks(int year) {
     DateTime dec28 = DateTime(year, 12, 28);
@@ -49,17 +82,19 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   List<int> getDateList(){
-    int currentDayofWeek = DateTime.now().weekday;
+    int currentDayofWeek = ChoosenDay.choosenDay.weekday;
     List<int> days = List<int>.filled(7,0, growable: true);
     
 
 
     for (int i = 0; i <= 7 - currentDayofWeek; i++){
-      days[currentDayofWeek + i-1] = DateTime.now().day + i;
+      days[currentDayofWeek + i-1] = ChoosenDay.choosenDay.add(Duration(days: i)).day;
     }
 
     for (int i = 1; i < currentDayofWeek; i++){
-      days[currentDayofWeek - i - 1] = DateTime.now().day - i;
+      
+      days[currentDayofWeek - i - 1] = ChoosenDay.choosenDay.subtract(Duration(days: i)).day;
+      
     }
   
     return days;
@@ -69,8 +104,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   
   List<Container> getDaysAndStuff(context){
-    final int week = weekNumber(DateTime.now());
-
+    DateTime displayDay = ChoosenDay.choosenDay;
 
     List<Container> weekList= [
       Container(
@@ -78,8 +112,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         child:Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(DateFormat.MMM().format(DateTime.now()), textScaleFactor: 1.3), //Hard coded i fix later bc lazy
-            Text("v$week", textScaleFactor: 1.3)
+            Text(DateFormat.MMM().format(displayDay), textScaleFactor: 1.3),
+
           ]
         )
       )

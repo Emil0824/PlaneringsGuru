@@ -35,7 +35,7 @@ class _WeekViewState extends State<WeekView> {
         floatingActionButton: AddEvent(
           callbackFunction: callback,
       ),
-        appBar: CustomAppBar(),
+        appBar: CustomAppBar(callbackFunction: callback),
         );
     
   }

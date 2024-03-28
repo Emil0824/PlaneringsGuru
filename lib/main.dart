@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:planeringsguru/classes/choosenDay.dart';
 import 'package:planeringsguru/views/dayPage.dart';
 import 'package:planeringsguru/views/monthPage.dart';
 import 'package:planeringsguru/views/weekPage.dart';
@@ -50,8 +51,12 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  
+
   @override
   Widget build(BuildContext context) {
+    ChoosenDay.changeToDayViewCallBack = _onItemTapped;
+
     return Scaffold(
       body: PageView(
         controller: _pageController,

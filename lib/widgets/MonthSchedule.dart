@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:planeringsguru/classes/choosenDay.dart';
+
 
 class MonthSchedule extends StatefulWidget{
   const MonthSchedule({super.key});
@@ -30,18 +32,24 @@ DateTime? _selectedDay;
             calendarFormat: CalendarFormat.month,
             availableCalendarFormats: const {CalendarFormat.month: 'Month',},
             
-             selectedDayPredicate: (day) {
+            selectedDayPredicate: (day) {
                 return isSameDay(_selectedDay, day);
-              },
-              onDaySelected: (selectedDay, focusedDay) {
-                setState(() {
-                  _selectedDay = selectedDay;
-                  _focusedDay = focusedDay; // update `_focusedDay` as well
-                });
-              },
-              onPageChanged: (focusedDay) {
-                _focusedDay = focusedDay;
-              },
+            },
+            onDaySelected: (selectedDay, focusedDay) {
+              setState(() {
+                _selectedDay = selectedDay;
+                _focusedDay = focusedDay; // update `_focusedDay` as well
+
+                print("select: "+ _selectedDay!.day.toString());
+                ChoosenDay.change(_selectedDay!);
+                ChoosenDay.changeToDayViewCallBack(1);
+              });
+            },
+            onPageChanged: (focusedDay) {
+              _focusedDay = focusedDay;
+            },
+
+
           ),
           const SizedBox(height: 20),
         ]

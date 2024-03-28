@@ -3,6 +3,7 @@
 class ChoosenDay{
   static DateTime choosenDay = DateTime.now();
 
+  static Function changeToDayViewCallBack = () {};
 
 
   static reset(){

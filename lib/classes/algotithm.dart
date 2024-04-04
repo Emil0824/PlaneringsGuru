@@ -13,8 +13,7 @@ class Algorithm{
   }
 
   static planSpannedEvent(String title, Duration duration, DateTimeRange spann){
-    List<DayEvent> events = DayEvent.getEvents();
-    
+
     DayEvent tempDayEvent = DayEvent(
       start: DateTime.now(), 
       duration: duration,
@@ -60,7 +59,7 @@ class Algorithm{
 
     //generate random times
     for (int i = 0; i < 100; i++){
-      arrayOfSchemas.add([]);
+      arrayOfSchemas.add(staticEvents);
       looseEvents.forEach((current) {
         int durrTime = (current.date.duration.inMinutes / 5).toInt();
 
@@ -78,6 +77,11 @@ class Algorithm{
         }
       });
     }
+
+
+
+    //find good schemas from arrayOfSchemas
+    
   }
 
   static List<int> getNoNoValues(DayEvent event, DateTimeRange spann){

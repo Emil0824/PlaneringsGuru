@@ -61,8 +61,30 @@ class DayEvent{
   }
 
 
-  static getEvents(){
+  static List<DayEvent> getEvents(){
     return events;
+  }
+
+  static List<DayEvent> getLooseEvent(DateTimeRange spann){
+    List<DayEvent> looseStuff = [];
+    events.forEach((current) {
+      if (current.isAuto && current.date.start.isAfter(spann.start) && current.date.end.isBefore(spann.end)){
+        looseStuff.add(current);
+      }
+    });
+
+    return looseStuff;
+  }
+
+  static List<DayEvent> getEventsInSpann(DateTimeRange spann){
+    List<DayEvent> eventStuff = [];
+    events.forEach((current) {
+      if (!current.isAuto && current.date.start.isAfter(spann.start) && current.date.end.isBefore(spann.end)){
+        eventStuff.add(current);
+      }
+    });
+
+    return eventStuff;
   }
 
 /*

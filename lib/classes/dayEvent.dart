@@ -73,6 +73,10 @@ class DayEvent{
       }
     });
 
+    looseStuff.forEach((element) {
+      events.remove(element);
+    });
+
     return looseStuff;
   }
 
@@ -81,6 +85,7 @@ class DayEvent{
     events.forEach((current) {
       if (!current.isAuto && current.date.start.isAfter(spann.start) && current.date.end.isBefore(spann.end)){
         eventStuff.add(current);
+       
       }
     });
 

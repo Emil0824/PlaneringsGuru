@@ -7,7 +7,7 @@ class DayEvent{
   late DateTimeRange date;
   String title;
   bool isAuto;
-
+  bool isOptional = false;
 
 
   //list of all personaly planned events
@@ -19,12 +19,18 @@ class DayEvent{
 
 
 
-  DayEvent({required DateTime start, required Duration duration, required this.title, required this.isAuto}){
+  DayEvent({required DateTime start, required Duration duration, required this.title, required this.isAuto, bool? isOptional}){
     date = DateTimeRange(
       start: start,
       end: start.add(duration),
     );
+    
+    if(isOptional != null){
+      this.isOptional = isOptional;
+    }
   }
+
+  
 
 
   //add check for collsion in looseEvents if yes move loose events
@@ -65,7 +71,7 @@ class DayEvent{
     return events;
   }
 
-  static List<DayEvent> getLooseEvent(DateTimeRange spann){
+  static List<DayEvent> getLooseEventAndRemove(DateTimeRange spann){
     List<DayEvent> looseStuff = [];
     events.forEach((current) {
       if (current.isAuto && current.date.start.isAfter(spann.start) && current.date.end.isBefore(spann.end)){
@@ -75,6 +81,17 @@ class DayEvent{
 
     looseStuff.forEach((element) {
       events.remove(element);
+    });
+
+    return looseStuff;
+  }
+
+  static List<DayEvent> getLooseEvent(DateTimeRange spann){
+    List<DayEvent> looseStuff = [];
+    events.forEach((current) {
+      if (current.isAuto && current.date.start.isAfter(spann.start) && current.date.end.isBefore(spann.end)){
+        looseStuff.add(current);
+      }
     });
 
     return looseStuff;

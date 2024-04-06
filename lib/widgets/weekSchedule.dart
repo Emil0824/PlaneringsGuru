@@ -6,7 +6,9 @@ import 'package:planeringsguru/widgets/Event.dart';
 
 
 class WeekSchedule extends StatelessWidget{
-  const WeekSchedule({super.key});
+
+  final Function callback;
+  const WeekSchedule({super.key, required this.callback});
 
   
 
@@ -47,7 +49,7 @@ class WeekSchedule extends StatelessWidget{
                       )
                     ),
                     Positioned.fill(
-                      child: Event(currentPage: "week")
+                      child: Event(currentPage: "week", callback: callback)
                     )
                   ],
                 ),

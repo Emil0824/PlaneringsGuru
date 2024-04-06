@@ -1,8 +1,10 @@
+import 'dart:collection';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:planeringsguru/classes/dayEvent.dart';
 import 'package:planeringsguru/classes/intTripplet.dart';
+import 'package:planeringsguru/widgets/Event.dart';
 
 
 class Algorithm{
@@ -14,28 +16,36 @@ class Algorithm{
   }
 
   static planSpannedEvent(String title, Duration duration, DateTimeRange spann){
-
+    
     DayEvent tempDayEvent = DayEvent(
       start: DateTime.now(), 
       duration: duration,
       title: title,
       isAuto: true
+
     );
     
     
     List<DayEvent> looseEvents = DayEvent.getLooseEvent(spann);
+    List<DayEvent> staticEvents = DayEvent.getEventsInSpann(spann);
+    int howMany = 100;
     
+    //DayEvent.events += planList(looseEvents + [tempDayEvent], spann, staticEvents, howMany);   //replan whole looseschema
     
-    planList(looseEvents + [tempDayEvent], spann);
-
+    List<DayEvent> newSchema = planList([tempDayEvent], spann, staticEvents + looseEvents, howMany);     //replan inputed event
+    print("newSchema: $newSchema");
+    Event.addOptionalEvents(newSchema);
   }
 
 
-  static planList(List<DayEvent> looseEvents, DateTimeRange spann){
+  static List<DayEvent> planList(List<DayEvent> looseEvents, DateTimeRange spann, List<DayEvent> staticEvents, int howMany){
     List<List<DayEvent>> arrayOfSchemas = [];
-    List<DayEvent> staticEvents = DayEvent.getEventsInSpann(spann);
+    
+    bool isOptional = false;
+    if(looseEvents.length == 1){
+      isOptional = true;
+    }
 
-    int howMany = 100;
 
     /*time in int
     day 1
@@ -71,7 +81,6 @@ class Algorithm{
 
     //generate random times
     for (int i = 0; i < howMany; i++){
-      //print("looseEvents: " + looseEvents.length.toString());
       arrayOfSchemas.add(List.from(staticEvents));
       
       for (DayEvent current in looseEvents) {
@@ -94,7 +103,7 @@ class Algorithm{
             int day = startTime ~/ 288;
             int hour = (startTime % 288) ~/ 12;
             int minute = ((startTime % 288) % 12) * 5;
-            randEvent = DayEvent(start: DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day + 1 + day, hour, minute), duration: current.date.duration, title: current.title, isAuto: true);
+            randEvent = DayEvent(start: DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day + 1 + day, hour, minute), duration: current.date.duration, title: current.title, isAuto: true, isOptional: isOptional);
             arrayOfSchemas[i].add(randEvent);
             localNonoValues[i].addAll(getNoNoValues(randEvent, spann));
           }   
@@ -102,7 +111,6 @@ class Algorithm{
       }
     }
 
-    print(arrayOfSchemas);
 
     //find good schemas from arrayOfSchemas
     /*
@@ -115,32 +123,79 @@ class Algorithm{
     double avgDistanceMidnight;
     double score;
     double bestscore = 0;
-    List<DayEvent> bestSchedule = arrayOfSchemas[0];
+    List<DayEvent> bestSchedule = [];
     
-    for (int i = 0; i < howMany; i++) {
-      
-      sumGaps = calcavgGaps(arrayOfSchemas[i], spann); //compactness
-      //double deltaMostFewEvents = calcdeltaMostFewEvents(arrayOfSchemas[0], spann); //events per day diff
-      avgDistanceMidnight = calcavgDistance2am(localNonoValues[i]); //how close to the middle of the day are things planned
+    if (looseEvents.length > 1) {
+      bestSchedule = arrayOfSchemas[0];
 
-      //print("sumGaps: $sumGaps \n");
-      //print("deltaMostFewEvents: $deltaMostFewEvents \n");
-      //print("avgDistanceMidnight: $avgDistanceMidnight \n");
+      for (int i = 0; i < howMany; i++) {
       
+        sumGaps = calcavgGaps(arrayOfSchemas[i], spann); //compactness
+        //double deltaMostFewEvents = calcdeltaMostFewEvents(arrayOfSchemas[0], spann); //events per day diff
+        avgDistanceMidnight = calcavgDistance2am(localNonoValues[i]); //how close to the middle of the day are things planned
 
-      /*
-      show = {[a,30][b,35][c,45]}
-      {d,25}deltaMostFewEvents
-      */
-      score = sumGaps + avgDistanceMidnight;
-      if (score > bestscore){
-        bestscore = score;
-        bestSchedule = arrayOfSchemas[i];
+        //print("sumGaps: $sumGaps \n");
+        //print("deltaMostFewEvents: $deltaMostFewEvents \n");
+        //print("avgDistanceMidnight: $avgDistanceMidnight \n");
+        
+
+        /*
+        show = {[a,30][b,35][c,45]}
+        {d,25}deltaMostFewEvents
+        */
+        score = sumGaps + avgDistanceMidnight;
+        if (score > bestscore){
+          bestscore = score;
+          bestSchedule = arrayOfSchemas[i];
+        }
       }
+
+      //DayEvent.events += bestSchedule;
+      bestSchedule;
+    }
+    else {
+      Map<double, DayEvent> bestOnce = {};
+
+
+      for (int i = 0; i < howMany; i++) {
+        sumGaps = calcavgGaps(arrayOfSchemas[i], spann); //compactness
+        //double deltaMostFewEvents = calcdeltaMostFewEvents(arrayOfSchemas[0], spann); //events per day diff
+        avgDistanceMidnight = calcavgDistance2am(localNonoValues[i]); //how close to the middle of the day are things planned
+
+        //print("sumGaps: $sumGaps \n");
+        //print("deltaMostFewEvents: $deltaMostFewEvents \n");
+        //print("avgDistanceMidnight: $avgDistanceMidnight \n");
+        
+
+        /*
+        show = {[a,30][b,35][c,45]}
+        {d,25}deltaMostFewEvents
+        */
+        score = sumGaps + avgDistanceMidnight;
+        
+        if (bestOnce.length < 3) {
+          bestOnce.addAll({score: arrayOfSchemas[i][arrayOfSchemas[i].length - 1]});
+        }
+        else {
+          double lowestKey = 9999999999;
+          for(double key in bestOnce.keys) {
+            if (key < lowestKey){
+              lowestKey = key;
+            }
+          }
+
+          if (score > lowestKey){
+            bestOnce.remove(lowestKey);
+            bestOnce.addAll({score: arrayOfSchemas[i][arrayOfSchemas[i].length - 1]});
+          }
+        }
+      }
+
+      bestSchedule.addAll(bestOnce.values);
     }
     
+    return bestSchedule;
     
-    DayEvent.events += bestSchedule;
   }
 
   static List<int> getNoNoValues(DayEvent event, DateTimeRange spann){

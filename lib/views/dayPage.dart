@@ -36,8 +36,7 @@ class _DayViewState extends State<DayView> {
         appBar: DayAppBar(
           callbackFunction: callback,
           ),
-        body: DaySchedule(
-        ),
+        body: DaySchedule(callback: callback),
         floatingActionButton: AddEvent(
           callbackFunction: callback,
       ),

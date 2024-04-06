@@ -9,7 +9,8 @@ import 'package:planeringsguru/widgets/Event.dart';
 
 class DaySchedule extends StatefulWidget {
 
-  DaySchedule({Key? key}) : super(key: key);
+  final Function callback;
+  DaySchedule({Key? key, required this.callback}) : super(key: key);
   
   
 
@@ -24,6 +25,12 @@ class _DaySchedule extends State<DaySchedule>{
 
   var list = [for(var i=8; i<21; i+=1) i];
   DateTime choosenDay = ChoosenDay.choosenDay;
+
+  callback(){
+    setState(() {
+      
+    });
+  }
 
   
   _DaySchedule();
@@ -66,7 +73,7 @@ class _DaySchedule extends State<DaySchedule>{
                     ),
                     Positioned.fill(
                       child: Event(
-                        currentPage: "day",
+                        currentPage: "day", callback: callback,
                       )
                     )
                   ],

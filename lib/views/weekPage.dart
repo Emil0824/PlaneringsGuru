@@ -31,7 +31,7 @@ class _WeekViewState extends State<WeekView> {
 
     return Scaffold(
       
-        body: WeekSchedule(),
+        body: WeekSchedule(callback: callback),
         floatingActionButton: AddEvent(
           callbackFunction: callback,
       ),

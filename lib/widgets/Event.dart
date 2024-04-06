@@ -7,13 +7,21 @@ import 'package:planeringsguru/classes/globalDesign.dart';
 
 
 class Event extends StatelessWidget {
-  final List<DayEvent> scheduleData = DayEvent.getEvents();
+  List<DayEvent> scheduleData = DayEvent.getEvents();
 
   final currentPage;
-  Event({super.key, required this.currentPage});
+  final Function callback;
+  Event({super.key, required this.currentPage, required this.callback});
+
+  static List<DayEvent> currentOptionals = [];
+
+  static addOptionalEvents(List<DayEvent> newEvents){
+    currentOptionals = newEvents;
+  }
   
   @override
   Widget build(BuildContext context) {
+    scheduleData += currentOptionals;
 
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
@@ -96,20 +104,35 @@ class Event extends StatelessWidget {
             height: totHeight,
             left: totalOffset,
             width: totalWidth,
-            child: Container(
+            child: GestureDetector(
+              onTap: () {
+                if (element.isOptional){
+                  print("optional");
+                  element.isOptional = false;
+                  DayEvent.addEvent(element);
+                  currentOptionals = [];
+                  callback();
+                }
+                else{
+                  print("not optional");
+                }
+              },
               
-              
-
-
-              decoration: BoxDecoration(
-                color: eventC,
-                borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-                border: Border.all(color: GlobalDesign.eventBorder),
-              ),
-              width: 100,
-              
-              child: Column(
-                children: checkHeight(totHeight, element.title)
+              child: Container(
+                
+                
+            
+                
+                decoration: BoxDecoration(
+                  color: element.isOptional? Colors.green : eventC,
+                  borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+                  border: Border.all(color: GlobalDesign.eventBorder),
+                ),
+                width: 100,
+                
+                child: Column(
+                  children: checkHeight(totHeight, element.title)
+                ),
               ),
             )
           ),

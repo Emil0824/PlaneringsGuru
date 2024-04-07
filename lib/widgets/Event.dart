@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:planeringsguru/classes/choosenDay.dart';
 import 'package:planeringsguru/classes/dayEvent.dart';
 import 'package:planeringsguru/classes/globalDesign.dart';
-
+import 'package:planeringsguru/classes/userPreferences.dart';
 
 class Event extends StatelessWidget {
   List<DayEvent> scheduleData = DayEvent.getEvents();
@@ -111,10 +111,16 @@ class Event extends StatelessWidget {
                   element.isOptional = false;
                   DayEvent.addEvent(element);
                   currentOptionals = [];
+                  UserPreferences.weighAdjust(element);
                   callback();
                 }
                 else{
-                  print("not optional");
+                  AlertDialog(
+                    title: const Text('Not optional'),
+                    content: const Text(
+                      'hatar Benis funktioner',
+                    ),
+                  );
                 }
               },
               

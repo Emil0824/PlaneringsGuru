@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:planeringsguru/classes/dayEvent.dart';
 import 'package:planeringsguru/classes/intTripplet.dart';
+import 'package:planeringsguru/classes/userPreferences.dart';
 import 'package:planeringsguru/widgets/Event.dart';
 
 
@@ -130,9 +131,11 @@ class Algorithm{
 
       for (int i = 0; i < howMany; i++) {
       
-        sumGaps = calcavgGaps(arrayOfSchemas[i], spann); //compactness
+        sumGaps = calcavgGaps(arrayOfSchemas[i], spann)[1]; //compactness
+
+        //extract double
         //double deltaMostFewEvents = calcdeltaMostFewEvents(arrayOfSchemas[0], spann); //events per day diff
-        avgDistanceMidnight = calcavgDistance2am(localNonoValues[i]); //how close to the middle of the day are things planned
+        avgDistanceMidnight = calcavgDistance2am(localNonoValues[i])[1]; //how close to the middle of the day are things planned
 
         //print("sumGaps: $sumGaps \n");
         //print("deltaMostFewEvents: $deltaMostFewEvents \n");
@@ -158,9 +161,9 @@ class Algorithm{
 
 
       for (int i = 0; i < howMany; i++) {
-        sumGaps = calcavgGaps(arrayOfSchemas[i], spann); //compactness
+        sumGaps = calcavgGaps(arrayOfSchemas[i], spann)[1]; //compactness
         //double deltaMostFewEvents = calcdeltaMostFewEvents(arrayOfSchemas[0], spann); //events per day diff
-        avgDistanceMidnight = calcavgDistance2am(localNonoValues[i]); //how close to the middle of the day are things planned
+        avgDistanceMidnight = calcavgDistance2am(localNonoValues[i])[1]; //how close to the middle of the day are things planned
 
         //print("sumGaps: $sumGaps \n");
         //print("deltaMostFewEvents: $deltaMostFewEvents \n");
@@ -185,6 +188,9 @@ class Algorithm{
           }
 
           if (score > lowestKey){
+            print("sumGaps: $sumGaps");
+            print("avgDistanceMidnight: $avgDistanceMidnight");
+
             bestOnce.remove(lowestKey);
             bestOnce.addAll({score: arrayOfSchemas[i][arrayOfSchemas[i].length - 1]});
           }
@@ -205,6 +211,10 @@ class Algorithm{
     int hourTime = event.date.start.hour - spann.start.hour;
     int dayTime = event.date.start.day - spann.start.day;
     int durrTime = (event.date.duration.inMinutes / 5).toInt();
+
+    print(minuteTime);
+    print(hourTime);
+    print(dayTime);
 
     int startTime = ((minuteTime/5).toInt()) + (hourTime * 12) + (dayTime * 288);
     for (int i = startTime; i <= startTime + durrTime; i++){
@@ -227,22 +237,37 @@ class Algorithm{
     return status;
   }
 
-  static double calcavgDistance2am(List<int> occupiedSlots){
+  static List<double> calcavgDistance2am(List<int> occupiedSlots){
     //sum the distance of all events from midnight divided by the number of events
     double totscore = 0;
+    double vikt = UserPreferences.workTimeShifter;
+    double hourSum = 0;
+    double worstTime = 12;
+    double worstTimeScore = -5000;
+   
 
     for (int current in occupiedSlots) {
       double temp = (current % 288)/12;
-
+      hourSum += temp;
       //mega nice equation
-      totscore += (100) / (1 + exp(-1.6 * (temp - 8.3)) + exp(1.2 * (temp - 18)));
+
+      
+      totscore += (100) / (1 + exp(-1.6 * (temp - 8.3 + vikt)) + exp(1.2 * (temp - 18 + vikt)));
+
+
+      double timeScore = pow(temp, 2) - 24 * temp + 150;
+      if (timeScore > worstTimeScore){
+        worstTime = temp;
+      }
     }
+
     double score = totscore / occupiedSlots.length;
+    double x = hourSum / occupiedSlots.length;
     
-    return score;
+    return [x, score, worstTime];
   }
 
-  static double calcavgGaps(List<DayEvent> schema, DateTimeRange spann){
+  static List<double> calcavgGaps(List<DayEvent> schema, DateTimeRange spann){
     double score = 0;
     int numDays = spann.duration.inDays;
     double sum = 0;
@@ -253,7 +278,7 @@ class Algorithm{
     for (int i = 0; i < numDays; i++){
       for (DayEvent element in schema) {
         if (element.date.start.day != element.date.end.day ){
-          return -2000;
+          return [-2000, -2000];
         }
         if(element.date.start.day == firstDay.add(Duration(days: i)).day){
           daystartEnd.add(IntTripplet(day: element.date.start.day, start: element.date.start.hour * 60 + element.date.start.minute, end: element.date.end.hour * 60 + element.date.end.minute));
@@ -264,21 +289,27 @@ class Algorithm{
     sortSumlist(daystartEnd);
     for (int i=0; i < daystartEnd.length - 1; i++){
       if (daystartEnd[i].day == daystartEnd[i+1].day){
-        sum +=daystartEnd[i+1].end - daystartEnd[i].start;
+        sum +=daystartEnd[i+1].start - daystartEnd[i].end;
         counter++;
       } 
     }
 
-    double alpha = 30; // collect weighted from personal class
+    double alpha = UserPreferences.breakTime; // collect weighted from personal class
+    print("counter: $counter");
+    if (counter == 0){
+      return[0, 0];
+      }
     sum /= counter;
+
     if (sum <= alpha){
       score = exp((1 / alpha) * log(100) * sum);
     }
     else{
       score = (100) / (1 + exp(0.05 * (sum - (100 + alpha))));
     }
-
-    return score;
+    
+    print("sum: $sum, score: $score");
+    return [sum, score];
   }
 
 
@@ -306,8 +337,10 @@ class Algorithm{
 
   }
 
-  static double calcdeltaMostFewEvents(List<DayEvent> schema, DateTimeRange spann){
+//TODO
+  static List<double> calcdeltaMostFewEvents(List<DayEvent> schema, DateTimeRange spann){
     double score = 0;
+    double x = 0;
     int numDays = spann.duration.inDays;
     double mostEvents = 0;
     double fewestEvents = 1000;
@@ -329,8 +362,9 @@ class Algorithm{
         mostEvents = counter;
       }
     }
-    score = mostEvents - fewestEvents;
+    x = mostEvents - fewestEvents;
+
     //score = f(x,c);
-    return score;
+    return [x,score];
   }
 }

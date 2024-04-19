@@ -46,6 +46,10 @@ class DayEvent{
     addEvent(tmp);
   }
 
+  static removeEvent(DayEvent event){
+    
+  }
+
 
   static addEvent(DayEvent event){
     int counter = 0;
@@ -73,38 +77,38 @@ class DayEvent{
 
   static List<DayEvent> getLooseEventAndRemove(DateTimeRange spann){
     List<DayEvent> looseStuff = [];
-    events.forEach((current) {
+    for (var current in events) {
       if (current.isAuto && current.date.start.isAfter(spann.start) && current.date.end.isBefore(spann.end)){
         looseStuff.add(current);
       }
-    });
+    }
 
-    looseStuff.forEach((element) {
+    for (var element in looseStuff) {
       events.remove(element);
-    });
+    }
 
     return looseStuff;
   }
 
   static List<DayEvent> getLooseEvent(DateTimeRange spann){
     List<DayEvent> looseStuff = [];
-    events.forEach((current) {
+    for (var current in events) {
       if (current.isAuto && current.date.start.isAfter(spann.start) && current.date.end.isBefore(spann.end)){
         looseStuff.add(current);
       }
-    });
+    }
 
     return looseStuff;
   }
 
   static List<DayEvent> getEventsInSpann(DateTimeRange spann){
     List<DayEvent> eventStuff = [];
-    events.forEach((current) {
+    for (var current in events) {
       if (!current.isAuto && current.date.start.isAfter(spann.start) && current.date.end.isBefore(spann.end)){
         eventStuff.add(current);
        
       }
-    });
+    }
 
     return eventStuff;
   }

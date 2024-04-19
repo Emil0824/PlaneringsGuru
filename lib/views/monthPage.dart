@@ -32,7 +32,7 @@ class _MonthViewState extends State<MonthView> {
 
     return Scaffold(
       
-        body: MonthSchedule(),
+        body: const MonthSchedule(),
         floatingActionButton: AddEvent(
           callbackFunction: callback,
       ),

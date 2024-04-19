@@ -111,7 +111,7 @@ class _AdvancedPlannerState extends State<AdvancedPlanner> {
               ) else ListTile(
                 title: const Text("Start tid"),
                 
-                subtitle: Text("${_startTime.hour}:${_startTime.minute}"),
+                subtitle: Text("${_startTime.hour.toString().padLeft(2, '0')}:${_startTime.minute.toString().padLeft(2, '0')}"),
                 onTap: () async{
                   final tid = await showDateTimePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime.now());
                   if (tid != null) {

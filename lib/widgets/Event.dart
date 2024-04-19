@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names, avoid_function_literals_in_foreach_calls, prefer_typing_uninitialized_variables, file_names
 
+
 import 'package:flutter/material.dart';
 import 'package:planeringsguru/classes/choosenDay.dart';
 import 'package:planeringsguru/classes/dayEvent.dart';
@@ -107,7 +108,6 @@ class Event extends StatelessWidget {
             child: GestureDetector(
               onTap: () {
                 if (element.isOptional){
-                  print("optional");
                   element.isOptional = false;
                   DayEvent.addEvent(element);
                   currentOptionals = [];
@@ -115,12 +115,7 @@ class Event extends StatelessWidget {
                   callback();
                 }
                 else{
-                  AlertDialog(
-                    title: const Text('Not optional'),
-                    content: const Text(
-                      'hatar Benis funktioner',
-                    ),
-                  );
+                  showEventPopup(context, element);
                 }
               },
               
@@ -196,4 +191,29 @@ class Event extends StatelessWidget {
 
     return newTitle;
   }
+//"${_startTime.hour.toString().padLeft(2, '0')}:${_startTime.minute.toString().padLeft(2, '0')}")
+
+  Future<void> showEventPopup(context, DayEvent element) async {
+  await showDialog(
+    context: context, 
+    builder: (BuildContext context) {
+      return AlertDialog(
+        content: Column(
+          children: [
+            Text(
+              "${element.title} \nStart tid: ${element.date.start.hour.toString().padLeft(2, '0')}:${element.date.start.minute.toString().padLeft(2, '0')} \nSlut tid: ${element.date.end.hour.toString().padLeft(2, '0')}:${element.date.end.minute.toString().padLeft(2, '0')}"
+              ,style: TextStyle(
+                fontSize: 16
+              ),
+            ),
+            ListTile()
+          ],
+        )
+        
+      );
+    });
+  }
 }
+
+
+

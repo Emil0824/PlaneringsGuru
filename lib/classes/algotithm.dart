@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -34,7 +33,6 @@ class Algorithm{
     //DayEvent.events += planList(looseEvents + [tempDayEvent], spann, staticEvents, howMany);   //replan whole looseschema
     
     List<DayEvent> newSchema = planList([tempDayEvent], spann, staticEvents + looseEvents, howMany);     //replan inputed event
-    print("newSchema: $newSchema");
     Event.addOptionalEvents(newSchema);
   }
 
@@ -65,12 +63,12 @@ class Algorithm{
     00:00 = 576
     */
     List<int> nonoValues = [];
-    int spannTime = (spann.duration.inMinutes / 5).toInt();
+    int spannTime = spann.duration.inMinutes ~/ 5;
     DayEvent randEvent;
 
-    staticEvents.forEach((current) {
+    for (var current in staticEvents) {
       nonoValues.addAll(getNoNoValues(current, spann));
-    });
+    }
 
     List<List<int>> localNonoValues = [];
     
@@ -85,7 +83,7 @@ class Algorithm{
       arrayOfSchemas.add(List.from(staticEvents));
       
       for (DayEvent current in looseEvents) {
-        int durrTime = (current.date.duration.inMinutes / 5).toInt();
+        int durrTime = current.date.duration.inMinutes ~/ 5;
         
 
         bool okSpot = false;
@@ -188,8 +186,6 @@ class Algorithm{
           }
 
           if (score > lowestKey){
-            print("sumGaps: $sumGaps");
-            print("avgDistanceMidnight: $avgDistanceMidnight");
 
             bestOnce.remove(lowestKey);
             bestOnce.addAll({score: arrayOfSchemas[i][arrayOfSchemas[i].length - 1]});
@@ -210,13 +206,11 @@ class Algorithm{
     int minuteTime = event.date.start.minute - spann.start.minute;
     int hourTime = event.date.start.hour - spann.start.hour;
     int dayTime = event.date.start.day - spann.start.day;
-    int durrTime = (event.date.duration.inMinutes / 5).toInt();
+    int durrTime = event.date.duration.inMinutes ~/ 5;
 
-    print(minuteTime);
-    print(hourTime);
-    print(dayTime);
+   
 
-    int startTime = ((minuteTime/5).toInt()) + (hourTime * 12) + (dayTime * 288);
+    int startTime = (minuteTime~/5) + (hourTime * 12) + (dayTime * 288);
     for (int i = startTime; i <= startTime + durrTime; i++){
       nonoValues.add(i);
     }
@@ -273,7 +267,7 @@ class Algorithm{
     double sum = 0;
     int counter = 0;
     List<IntTripplet> daystartEnd = [];
-    DateTime firstDay = DateTime.now().add(Duration(days: 1));
+    DateTime firstDay = DateTime.now().add(const Duration(days: 1));
     //Gaps between events of the same day
     for (int i = 0; i < numDays; i++){
       for (DayEvent element in schema) {
@@ -295,7 +289,6 @@ class Algorithm{
     }
 
     double alpha = UserPreferences.breakTime; // collect weighted from personal class
-    print("counter: $counter");
     if (counter == 0){
       return[0, 0];
       }
@@ -308,7 +301,6 @@ class Algorithm{
       score = (100) / (1 + exp(0.05 * (sum - (100 + alpha))));
     }
     
-    print("sum: $sum, score: $score");
     return [sum, score];
   }
 
@@ -345,7 +337,7 @@ class Algorithm{
     double mostEvents = 0;
     double fewestEvents = 1000;
     double counter = 0;
-    DateTime firstDay = DateTime.now().add(Duration(days: 1));
+    DateTime firstDay = DateTime.now().add(const Duration(days: 1));
     //the delta of the day with the most events compared the the one with the fewest
 
     for (int i = 0; i < numDays; i++){

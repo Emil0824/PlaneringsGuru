@@ -7,9 +7,7 @@ import 'package:planeringsguru/classes/dayEvent.dart';
 import 'package:planeringsguru/classes/globalDesign.dart';
 import 'package:planeringsguru/classes/userPreferences.dart';
 
-class Event extends StatelessWidget {
-  List<DayEvent> scheduleData = DayEvent.getEvents();
-
+class Event extends StatefulWidget {
   final currentPage;
   final Function callback;
   Event({super.key, required this.currentPage, required this.callback});
@@ -19,10 +17,17 @@ class Event extends StatelessWidget {
   static addOptionalEvents(List<DayEvent> newEvents){
     currentOptionals = newEvents;
   }
-  
+
+  @override
+  State<Event> createState() => _EventState();
+}
+
+class _EventState extends State<Event> {
+  List<DayEvent> scheduleData = DayEvent.getEvents();
+
   @override
   Widget build(BuildContext context) {
-    scheduleData += currentOptionals;
+    scheduleData += Event.currentOptionals;
 
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
@@ -33,12 +38,12 @@ class Event extends StatelessWidget {
         final minuteHeight = hourHight / 60;
 
 
-        if (currentPage == "week"){
+        if (widget.currentPage == "week"){
           return Stack(
             children: getWeekPositions(hourHight, minuteHeight, maxWidth, context)
           );
         }
-        else if (currentPage == "day"){
+        else if (widget.currentPage == "day"){
           return Stack(
             children: getPositionedStuff(hourHight, minuteHeight, maxWidth, context, ChoosenDay.choosenDay, -1)
           );
@@ -49,7 +54,6 @@ class Event extends StatelessWidget {
       }
     );
   }
-
 
   List<Positioned> getWeekPositions(hourHight, minuteHeight, maxWidth, context){
     int currentDayofWeek = ChoosenDay.choosenDay.weekday;
@@ -73,9 +77,15 @@ class Event extends StatelessWidget {
     
   }
 
-
-  
-  
+  final MaterialStateProperty<Icon?> thumbIcon =
+      MaterialStateProperty.resolveWith<Icon?>(
+    (Set<MaterialState> states) {
+      if (states.contains(MaterialState.selected)) {
+        return const Icon(Icons.lock_open);
+      }
+      return const Icon(Icons.lock);
+    },
+  );
 
   List<Positioned> getPositionedStuff(hourHight, minuteHeight, maxWidth, context, DateTime today, double offset){
     
@@ -110,9 +120,9 @@ class Event extends StatelessWidget {
                 if (element.isOptional){
                   element.isOptional = false;
                   DayEvent.addEvent(element);
-                  currentOptionals = [];
+                  Event.currentOptionals = [];
                   UserPreferences.weighAdjust(element);
-                  callback();
+                  widget.callback();
                 }
                 else{
                   showEventPopup(context, element);
@@ -148,8 +158,6 @@ class Event extends StatelessWidget {
     
   }
 
-
-
   List<Container> checkHeight(height, title) {
     if (height > 50) {
       
@@ -175,14 +183,13 @@ class Event extends StatelessWidget {
     }
   }
 
-
   String CheckText(String title){
     String newTitle;
 
-    if(currentPage == "week" && title.length > 4){
+    if(widget.currentPage == "week" && title.length > 4){
       newTitle = "${title.substring(0, 4)}..";
     }
-    else if(currentPage == "day" && title.length > 8){
+    else if(widget.currentPage == "day" && title.length > 8){
       newTitle = "${title.substring(0, 8)}..";
     }
     else{
@@ -191,23 +198,161 @@ class Event extends StatelessWidget {
 
     return newTitle;
   }
-//"${_startTime.hour.toString().padLeft(2, '0')}:${_startTime.minute.toString().padLeft(2, '0')}")
 
+//"${_startTime.hour.toString().padLeft(2, '0')}:${_startTime.minute.toString().padLeft(2, '0')}")
   Future<void> showEventPopup(context, DayEvent element) async {
   await showDialog(
     context: context, 
     builder: (BuildContext context) {
       return AlertDialog(
-        content: Column(
-          children: [
-            Text(
-              "${element.title} \nStart tid: ${element.date.start.hour.toString().padLeft(2, '0')}:${element.date.start.minute.toString().padLeft(2, '0')} \nSlut tid: ${element.date.end.hour.toString().padLeft(2, '0')}:${element.date.end.minute.toString().padLeft(2, '0')}"
-              ,style: TextStyle(
-                fontSize: 16
-              ),
-            ),
-            ListTile()
-          ],
+        content: StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.grey, // Choose your border color
+                      width: 1.0, // Adjust the border width
+                    ),
+                    borderRadius: BorderRadius.circular(10.0), // Adjust border radius as needed
+                  ),
+                  child: ListTile(
+                    title: Row(
+                      children: [
+                        Text(
+                          'Titel:'
+                        ),
+                        SizedBox(width: 8),
+                        Expanded(
+                          child: TextFormField(
+                            initialValue: element.title,
+                            textAlign: TextAlign.end,
+                            decoration: InputDecoration(
+                              //border: OutlineInputBorder(),
+                              
+                            ),
+                            onChanged: (value) {
+                                element.title = value;
+                            },
+                          ),
+                        )
+                      ],
+                    )
+                    
+                  ),
+                ),
+                SizedBox(height: 10,),
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.grey, // Choose your border color
+                      width: 1.0, // Adjust the border width
+                    ),
+                    borderRadius: BorderRadius.circular(10.0), // Adjust border radius as needed
+                    
+                  ),
+                  child: ListTile(
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text("Dag: "),
+                        
+                        OutlinedButton(
+                          onPressed: () async{
+                            final dag = await showDatePicker(
+                              context: context, 
+                              initialDate: element.date.start, 
+                              firstDate: DateTime.now(), 
+                              lastDate: DateTime.now().add(Duration(days: 365))
+                            );
+                            
+                          }, 
+                          child: Text("${element.date.start.day}/${element.date.start.month} - ${element.date.start.year}"),
+                        ),
+                        
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10,),
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.grey, // Choose your border color
+                      width: 1.0, // Adjust the border width
+                    ),
+                    borderRadius: BorderRadius.circular(10.0), // Adjust border radius as needed
+                    
+                  ),
+                  child: ListTile(
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        
+                        OutlinedButton(
+                          onPressed: () {}, 
+                          child: Text("${element.date.start.hour.toString().padLeft(2, '0')}:${element.date.start.minute.toString().padLeft(2, '0')}")
+                        ),
+                        
+
+                        const Text(" - "),
+                        
+                        
+                        OutlinedButton(
+                          onPressed: () {}, 
+                          child: Text("${element.date.end.hour.toString().padLeft(2, '0')}:${element.date.end.minute.toString().padLeft(2, '0')}"),
+                        ),
+                        
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10,),
+
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.grey, // Choose your border color
+                      width: 1.0, // Adjust the border width
+                    ),
+                    borderRadius: BorderRadius.circular(10.0), // Adjust border radius as needed
+                    
+                  ),
+                  child: ListTile(
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Är flytlig"),
+                        Switch(
+                          value: element.isAuto, 
+                          thumbIcon: thumbIcon,
+
+                          onChanged: (value) {
+                            setState(() {
+                              element.isAuto = value;
+                              widget.callback();   //de är såhär man gör state callback
+                            });
+                            
+                          }
+                        )
+                      ],
+                    )
+                    ),
+                  ),
+                
+                //Text(
+                //  "${element.title} \nStart tid: ${element.date.start.hour.toString().padLeft(2, '0')}:${element.date.start.minute.toString().padLeft(2, '0')} \nSlut tid: ${element.date.end.hour.toString().padLeft(2, '0')}:${element.date.end.minute.toString().padLeft(2, '0')}"
+                //  ,style: TextStyle(
+                //    fontSize: 16
+                //  ),
+                //),
+                //IconButton(onPressed: onPressed, icon: icon),
+                
+              ],
+            );
+          }
         )
         
       );

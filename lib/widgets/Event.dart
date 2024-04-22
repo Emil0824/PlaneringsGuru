@@ -27,6 +27,7 @@ class _EventState extends State<Event> {
 
   @override
   Widget build(BuildContext context) {
+    scheduleData = DayEvent.getEvents();
     scheduleData += Event.currentOptionals;
 
     return LayoutBuilder(
@@ -324,7 +325,7 @@ class _EventState extends State<Event> {
                     title: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Är flytlig"),
+                        Text("Är flytlig:"),
                         Switch(
                           value: element.isAuto, 
                           thumbIcon: thumbIcon,
@@ -349,7 +350,37 @@ class _EventState extends State<Event> {
                 //  ),
                 //),
                 //IconButton(onPressed: onPressed, icon: icon),
+                SizedBox(height: 10,),
                 
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.grey, // Choose your border color
+                      width: 1.0, // Adjust the border width
+                    ),
+                    borderRadius: BorderRadius.circular(10.0), // Adjust border radius as needed
+                    
+                    ),
+                    child: ListTile(
+                      title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Ta bort:"),
+                        OutlinedButton(
+                          onPressed: () {
+                            setState (() {
+                              DayEvent.removeEvent(element);
+                              Navigator.of(context).pop();
+                              widget.callback();
+                            });
+                            
+                          }, 
+                          child: Icon(Icons.close),
+                        ),
+                      ],
+                    )
+                    )
+                  )
               ],
             );
           }

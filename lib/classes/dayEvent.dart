@@ -47,7 +47,7 @@ class DayEvent{
   }
 
   static removeEvent(DayEvent event){
-    
+    events.remove(event);
   }
 
 

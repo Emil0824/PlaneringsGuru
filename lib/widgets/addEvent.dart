@@ -1,6 +1,7 @@
 // ignore_for_file: file_names, prefer_const_constructors, no_logic_in_create_state, library_private_types_in_public_api, prefer_const_constructors_in_immutables
 
 import 'package:flutter/material.dart';
+import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
 import 'package:planeringsguru/classes/algotithm.dart';
 import 'package:planeringsguru/views/advancedPlanner.dart';
 
@@ -73,21 +74,53 @@ class _AddEventState extends State<AddEvent>{
                           }
                         );
                       }
+                      final tid = await showTimePicker(context: context,initialTime: TimeOfDay(hour: 0, minute: 0),
+                        initialEntryMode: TimePickerEntryMode.inputOnly,
+                        );
+                        
+                        if (tid != null) {
+                        setState(() {
+                          _duration = Duration(hours: tid.hour, minutes: tid.minute);
+                          
+                        });
+                      }
                     },
                   ),*/
                   ListTile(
                     title: const Text("Längd"),
                     subtitle: Text("${_duration.inMinutes} minuter"),
                     onTap: () async{
-                      final tid = await showTimePicker(context: context,initialTime: TimeOfDay(hour: 0, minute: 0),
-                        initialEntryMode: TimePickerEntryMode.inputOnly,
+                      await showDialog(context: context, 
+                      builder: (context) {
+                        return AlertDialog(
+                          actions: [
+                            Center(
+                              child: TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                }, 
+                                child: Text("Klar")
+                              ),
+                            )
+                          ],
+                          content: Container(
+                            padding: EdgeInsets.symmetric(vertical: 100),
+                            child: TimePickerSpinner(
+                              is24HourMode: true,
+                              
+                              time: DateTime.utc(DateTime.now().year, 1, 1, 1, 15),
+                              isForce2Digits: true,
+                              
+                              onTimeChange: (time) {
+                                setState(() {
+                                  _duration = Duration(hours: time.hour, minutes: time.minute);
+                                },);
+                              },
+                            ),
+                          ),
                         );
-                      if (tid != null) {
-                        setState(() {
-                          _duration = Duration(hours: tid.hour, minutes: tid.minute);
-                          
-                        });
-                      }
+                        },
+                      );
                     },
                   ),
                 ]

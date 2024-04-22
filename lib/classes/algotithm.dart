@@ -30,20 +30,27 @@ class Algorithm{
     List<DayEvent> staticEvents = DayEvent.getEventsInSpann(spann);
     int howMany = 100;
     
-    //DayEvent.events += planList(looseEvents + [tempDayEvent], spann, staticEvents, howMany);   //replan whole looseschema
     
-    List<DayEvent> newSchema = planList([tempDayEvent], spann, staticEvents + looseEvents, howMany);     //replan inputed event
+    List<DayEvent> newSchema = planList([tempDayEvent], spann, staticEvents + looseEvents, howMany, false);     //replan inputed event
     Event.addOptionalEvents(newSchema);
   }
 
+  static reShuffleSchema(int from, int to){
+    DateTime now = DateTime.now();
+    DateTimeRange spann = DateTimeRange(start: DateTime(now.year, now.month,now.day + from, 0, 0), end: DateTime(now.year, now.month,now.day + to, 0, 0));
 
-  static List<DayEvent> planList(List<DayEvent> looseEvents, DateTimeRange spann, List<DayEvent> staticEvents, int howMany){
+    List<DayEvent> looseEvents = DayEvent.getLooseEventAndRemove(spann);
+    List<DayEvent> staticEvents = DayEvent.getEventsInSpannAndRemove(spann);
+    int howMany = 100;
+
+   
+    DayEvent.events += planList(looseEvents, spann, staticEvents, howMany, true);   //replan whole looseschema
+  }
+
+
+  static List<DayEvent> planList(List<DayEvent> looseEvents, DateTimeRange spann, List<DayEvent> staticEvents, int howMany, bool isShuffle){
     List<List<DayEvent>> arrayOfSchemas = [];
     
-    bool isOptional = false;
-    if(looseEvents.length == 1){
-      isOptional = true;
-    }
 
 
     /*time in int
@@ -102,7 +109,7 @@ class Algorithm{
             int day = startTime ~/ 288;
             int hour = (startTime % 288) ~/ 12;
             int minute = ((startTime % 288) % 12) * 5;
-            randEvent = DayEvent(start: DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day + 1 + day, hour, minute), duration: current.date.duration, title: current.title, isAuto: true, isOptional: isOptional);
+            randEvent = DayEvent(start: DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day + 1 + day, hour, minute), duration: current.date.duration, title: current.title, isAuto: true, isOptional: !isShuffle);
             arrayOfSchemas[i].add(randEvent);
             localNonoValues[i].addAll(getNoNoValues(randEvent, spann));
           }   
@@ -123,8 +130,9 @@ class Algorithm{
     double score;
     double bestscore = 0;
     List<DayEvent> bestSchedule = [];
+
     
-    if (looseEvents.length > 1) {
+    if (isShuffle) {
       bestSchedule = arrayOfSchemas[0];
 
       for (int i = 0; i < howMany; i++) {
@@ -151,7 +159,6 @@ class Algorithm{
         }
       }
 
-      //DayEvent.events += bestSchedule;
       bestSchedule;
     }
     else {

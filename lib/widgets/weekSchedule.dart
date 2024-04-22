@@ -1,6 +1,9 @@
 // ignore_for_file: sized_box_for_whitespace, file_names
 
+
+
 import 'package:flutter/material.dart';
+import 'package:planeringsguru/classes/algotithm.dart';
 import 'package:planeringsguru/classes/schedulePainter.dart';
 import 'package:planeringsguru/widgets/Event.dart';
 
@@ -27,41 +30,86 @@ class WeekSchedule extends StatelessWidget{
     }
 
 
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints viewportConstraints) {
-        return SingleChildScrollView(
-          controller: ScrollController(
-            initialScrollOffset: nowOffset
-            
-          ),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-                    minHeight: viewportConstraints.maxHeight,
-                  ),
-            child: IntrinsicHeight(
-              child: Container(
-                height: size,
-                child: Stack(
-                  children: [
-                    Positioned.fill(
-                      child: CustomPaint(
-                        painter: SchedulePainter(isweek: true),
-                      )
-                    ),
-                    Positioned.fill(
-                      child: Event(currentPage: "week", callback: callback)
-                    )
-                  ],
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints viewportConstraints) {
+              return SingleChildScrollView(
+                controller: ScrollController(
+                  initialScrollOffset: nowOffset
+                  
                 ),
-              ),
-            ),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                          minHeight: viewportConstraints.maxHeight,
+                        ),
+                  child: IntrinsicHeight(
+                    child: Container(
+                      height: size,
+                      child: Stack(
+                        children: [
+                          Positioned.fill(
+                            child: CustomPaint(
+                              painter: SchedulePainter(isweek: true),
+                            )
+                          ),
+                          Positioned.fill(
+                            child: Event(currentPage: "week", callback: callback)
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            }
           ),
-        );
-      }
+        ),
+        Positioned(
+          left: 15,
+          bottom: 15,
+          child: FloatingActionButton(
+            onPressed: () {
+              eventShuffle(context);
+            },
+            tooltip: 'Shuffla event',
+            child: const Icon(Icons.autorenew),
+          )
+        )
+      ],
     );
+  }
 
-    
-    
+  Future<void> eventShuffle(context) async {
+    await showDialog(
+      context: context, 
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Shuffla schemat?"),
+          actions: [
+            Center(
+              child: Row(children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  }, 
+                  child: Text("Nej")
+                ),
+                TextButton(
+                  onPressed: () {
+                    Algorithm.reShuffleSchema(1, 4);
+                    Navigator.of(context).pop();
+                    callback();
+                  }, 
+                  child: Text("Ja")
+                ),
+              ],),
+            )
+          ],
+        );
+      },
+    );
   }
 
 }

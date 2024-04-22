@@ -75,6 +75,21 @@ class DayEvent{
     return events;
   }
 
+  static List<DayEvent> getEventsInSpannAndRemove(DateTimeRange spann){
+    List<DayEvent> looseStuff = [];
+    for (var current in events) {
+      if (!current.isAuto && current.date.start.isAfter(spann.start) && current.date.end.isBefore(spann.end)){
+        looseStuff.add(current);
+      }
+    }
+
+    for (var element in looseStuff) {
+      events.remove(element);
+    }
+
+    return looseStuff;
+  }
+
   static List<DayEvent> getLooseEventAndRemove(DateTimeRange spann){
     List<DayEvent> looseStuff = [];
     for (var current in events) {

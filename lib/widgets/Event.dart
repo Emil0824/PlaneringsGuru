@@ -2,6 +2,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
 import 'package:planeringsguru/classes/choosenDay.dart';
 import 'package:planeringsguru/classes/dayEvent.dart';
 import 'package:planeringsguru/classes/globalDesign.dart';
@@ -202,6 +203,10 @@ class _EventState extends State<Event> {
 
 //"${_startTime.hour.toString().padLeft(2, '0')}:${_startTime.minute.toString().padLeft(2, '0')}")
   Future<void> showEventPopup(context, DayEvent element) async {
+    var _start = element.date.start;
+    var _end = element.date.end;
+    bool isValid = true;
+
   await showDialog(
     context: context, 
     builder: (BuildContext context) {
@@ -268,7 +273,18 @@ class _EventState extends State<Event> {
                               firstDate: DateTime.now(), 
                               lastDate: DateTime.now().add(Duration(days: 365))
                             );
-                            
+                            setState(() {
+                              if (dag != null){
+                                DateTime temp = dag.add(element.date.duration);
+                              
+                                element.date = DateTimeRange(
+                                  start: DateTime.utc(dag.year, dag.month, dag.day, element.date.start.hour, element.date.start.minute), 
+                                  end: DateTime.utc(temp.year, temp.month, temp.day, element.date.end.hour, element.date.end.minute), 
+                                );
+
+                                widget.callback();
+                              }
+                            });
                           }, 
                           child: Text("${element.date.start.day}/${element.date.start.month} - ${element.date.start.year}"),
                         ),
@@ -293,18 +309,190 @@ class _EventState extends State<Event> {
                       children: [
                         
                         OutlinedButton(
-                          onPressed: () {}, 
+                          onPressed: () async {
+                            await showDialog(context: context, 
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: const Center(child: Text("Ändra tid")),
+                                  actions: [
+                                    
+                                    Center(
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
+                                        children: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            }, 
+                                            child: Text("Avbryt")
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              if (isValid) {
+                                                setState(() {
+                                                  Navigator.of(context).pop();
+                                                  element.date = DateTimeRange(start: _start, end: _end);
+                                                  widget.callback();
+                                                },);
+                                              }
+                                            }, 
+                                            child: Text("Tillämpa")
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    
+                                  ],
+                                  content: Container(
+                                    padding: EdgeInsets.symmetric(vertical: 100),
+                  
+                                    child: Row(
+                                      children: [
+                                        Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          
+                                          children: [
+                                            Text("Start", textScaleFactor: 2),
+                                            SizedBox(height: 10,),
+                                            TimePickerSpinner(
+                                              is24HourMode: true,
+                                              time: element.date.start,
+                                              isForce2Digits: true,
+                                              
+                                              onTimeChange: (time) {
+                                                setState(() {
+                                                  _start = DateTime.utc(element.date.start.year, element.date.start.month, element.date.start.day, time.hour, time.minute);
+                                                  isValid = _start.isBefore(_end);
+                                                },);
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(width: 30,),
+                                        Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text("Slut", textScaleFactor: 2),
+                                            SizedBox(height: 10,),
+                                            TimePickerSpinner(
+                                              is24HourMode: true,
+                                              time: element.date.end,
+                                              isForce2Digits: true,
+                                              
+                                              onTimeChange: (time) {
+                                                setState(() {
+                                                  _end = DateTime.utc(element.date.end.year, element.date.end.month, element.date.end.day, time.hour, time.minute);
+                                                  isValid = _start.isBefore(_end);
+                                                },);
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          }, 
                           child: Text("${element.date.start.hour.toString().padLeft(2, '0')}:${element.date.start.minute.toString().padLeft(2, '0')}")
                         ),
                         
 
                         const Text(" - "),
-                        
-                        
                         OutlinedButton(
-                          onPressed: () {}, 
-                          child: Text("${element.date.end.hour.toString().padLeft(2, '0')}:${element.date.end.minute.toString().padLeft(2, '0')}"),
+                          onPressed: () async {
+                            await showDialog(context: context, 
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: const Center(child: Text("Ändra tid")),
+                                  actions: [
+                                    
+                                    Center(
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
+                                        children: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            }, 
+                                            child: Text("Avbryt")
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              if (isValid) {
+                                                setState(() {
+                                                  Navigator.of(context).pop();
+                                                  element.date = DateTimeRange(start: _start, end: _end);
+                                                  widget.callback();
+                                                },);
+                                              }
+                                            }, 
+                                            child: Text("Tillämpa")
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    
+                                  ],
+                                  content: Container(
+                                    padding: EdgeInsets.symmetric(vertical: 100),
+                  
+                                    child: Row(
+                                      children: [
+                                        Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          
+                                          children: [
+                                            Text("Start", textScaleFactor: 2),
+                                            SizedBox(height: 10,),
+                                            TimePickerSpinner(
+                                              is24HourMode: true,
+                                              time: element.date.start,
+                                              isForce2Digits: true,
+                                              
+                                              onTimeChange: (time) {
+                                                setState(() {
+                                                  _start = DateTime.utc(element.date.start.year, element.date.start.month, element.date.start.day, time.hour, time.minute);
+                                                  isValid = _start.isBefore(_end);
+                                                },);
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(width: 30,),
+                                        Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text("Slut", textScaleFactor: 2),
+                                            SizedBox(height: 10,),
+                                            TimePickerSpinner(
+                                              is24HourMode: true,
+                                              time: element.date.end,
+                                              isForce2Digits: true,
+                                              
+                                              onTimeChange: (time) {
+                                                setState(() {
+                                                  _end = DateTime.utc(element.date.end.year, element.date.end.month, element.date.end.day, time.hour, time.minute);
+                                                  isValid = _start.isBefore(_end);
+                                                },);
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          }, 
+                          child: Text("${element.date.end.hour.toString().padLeft(2, '0')}:${element.date.end.minute.toString().padLeft(2, '0')}")
                         ),
+                        
+                
                         
                       ],
                     ),

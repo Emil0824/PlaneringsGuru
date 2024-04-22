@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:planeringsguru/classes/algotithm.dart';
 import 'package:planeringsguru/classes/dayEvent.dart';
+import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 
 
 class AdvancedPlanner extends StatefulWidget {
@@ -76,6 +77,7 @@ class _AdvancedPlannerState extends State<AdvancedPlanner> {
                           initialDate: DateTime.now(),
                           firstDate:  DateTime.now().subtract(const Duration(days: 365 * 100)),
                           lastDate:  DateTime.now().add(const Duration(days: 365 * 100)),
+                          
                         );
                         if (tid != null) {
                           setState(() {
@@ -113,7 +115,13 @@ class _AdvancedPlannerState extends State<AdvancedPlanner> {
                 
                 subtitle: Text("${_startTime.hour.toString().padLeft(2, '0')}:${_startTime.minute.toString().padLeft(2, '0')}"),
                 onTap: () async{
-                  final tid = await showDateTimePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime.now());
+                  final tid = await showOmniDateTimePicker(
+                    context: context,
+                    is24HourMode: true,
+                    isForce2Digits: true,
+                    firstDate: DateTime.now(),
+                    
+                  );
                   if (tid != null) {
                     setState(() {
                       _startTime = tid;

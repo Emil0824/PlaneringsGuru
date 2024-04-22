@@ -68,10 +68,8 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           // Add your pages here
           DayView(),
-          DayView(),
           WeekView(),
           MonthView(),
-          DayView(),
           
         ],
       ),
@@ -81,10 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
         currentIndex: _currentIndex,
         onTap: _onItemTapped,
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Inställningar',
-          ),
+          
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_today),
             label: 'Dag',
@@ -97,10 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
             icon: Icon(Icons.calendar_month),
             label: 'Månad',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Konto',
-          ),
+          
         ],
       ),
     );

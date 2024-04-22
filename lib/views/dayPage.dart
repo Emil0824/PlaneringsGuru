@@ -39,7 +39,8 @@ class _DayViewState extends State<DayView> {
         body: DaySchedule(callback: callback),
         floatingActionButton: AddEvent(
           callbackFunction: callback,
-      ),
+        ),
+        
     );
   }
 }

@@ -141,7 +141,7 @@ class _AddEventState extends State<AddEvent>{
                   builder: (context) => AdvancedPlanner(),
                   ));
               },
-              child: const Text("Advancerad"),
+              child: const Text("Avancerad"),
             ),
             TextButton(
               onPressed: (){

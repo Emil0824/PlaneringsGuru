@@ -2,10 +2,16 @@
 
 
 
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:planeringsguru/classes/algotithm.dart';
+import 'package:planeringsguru/classes/dayEvent.dart';
 import 'package:planeringsguru/classes/schedulePainter.dart';
 import 'package:planeringsguru/widgets/Event.dart';
+
+
+
 
 
 class WeekSchedule extends StatelessWidget{
@@ -71,10 +77,13 @@ class WeekSchedule extends StatelessWidget{
           bottom: 15,
           child: FloatingActionButton(
             onPressed: () {
-              eventShuffle(context);
+              //eventShuffle(context)       
+              String saveString = jsonEncode(DayEvent.events);
+              Clipboard.setData(ClipboardData(text: saveString));
+              print(saveString);
             },
-            tooltip: 'Shuffla event',
-            child: const Icon(Icons.autorenew),
+            tooltip: 'Schema val',
+            child: const Icon(Icons.menu),
           )
         )
       ],

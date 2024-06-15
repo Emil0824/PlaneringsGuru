@@ -513,7 +513,7 @@ class _EventState extends State<Event> {
                     title: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Är flytlig:"),
+                        Text("Planera åt mig:"),
                         Switch(
                           value: element.isAuto, 
                           thumbIcon: thumbIcon,

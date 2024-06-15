@@ -31,7 +31,24 @@ class DayEvent{
   }
 
   
+  Map toJson() => {
+  'start': date.start.toIso8601String(),
+  'end': date.end.toIso8601String(),
+  'title': title,
+  'isAuto': isAuto,
+  'isOptional': isOptional
+  };
 
+
+  factory DayEvent.fromJson(Map<String, dynamic> json) {
+    return DayEvent(
+      start: DateTime.parse(json['start']),
+      duration: DateTime.parse(json['end']).difference(DateTime.parse(json['start'])),
+      title: json['title'],
+      isAuto: json['isAuto'],
+      isOptional: json['isOptional'] ?? false,
+    );
+  }
 
   //add check for collsion in looseEvents if yes move loose events
 
@@ -151,5 +168,7 @@ class DayEvent{
       throw Error();
     }
   }
+
+  
 }
 

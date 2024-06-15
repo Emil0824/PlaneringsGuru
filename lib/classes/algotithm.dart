@@ -28,7 +28,7 @@ class Algorithm{
     
     List<DayEvent> looseEvents = DayEvent.getLooseEvent(spann);
     List<DayEvent> staticEvents = DayEvent.getEventsInSpann(spann);
-    int howMany = 100;
+    int howMany = 3;
     
     
     List<DayEvent> newSchema = planList([tempDayEvent], spann, staticEvents + looseEvents, howMany, false);     //replan inputed event
@@ -41,7 +41,7 @@ class Algorithm{
 
     List<DayEvent> looseEvents = DayEvent.getLooseEventAndRemove(spann);
     List<DayEvent> staticEvents = DayEvent.getEventsInSpannAndRemove(spann);
-    int howMany = 100;
+    int howMany = 3;
 
    
     DayEvent.events += planList(looseEvents, spann, staticEvents, howMany, true);   //replan whole looseschema

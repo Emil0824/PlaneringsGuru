@@ -27,6 +27,7 @@ class _AddEventState extends State<AddEvent>{
   _AddEventState({required this.callbackFunction});
 
   Duration _duration = Duration(hours: 1, minutes: 15);
+  String _tempDuration = "";
   String _title = "Ange titel";
 
 
@@ -61,68 +62,21 @@ class _AddEventState extends State<AddEvent>{
                         _title = value;
                       },
                     )
-                  ),  /*
+                  ),  
                   ListTile(
-                    title: Text("Start tid"),
+                    title: Text("Längd"),
+                    subtitle: TextField(
+                      autofocus: false,
+                      textAlign: TextAlign.center,
+                      maxLength: 5,
+                      onChanged: (value) {
+                        _tempDuration = value;
+                      },
+                    )
                     
-                    subtitle: Text("${_startTime.hour}:${_startTime.minute}"),
-                    onTap: () async{
-                      final tid = await showDateTimePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime.now());
-                      if (tid != null) {
-                        setState(() {
-                          _startTime = tid;
-                          }
-                        );
-                      }
-                      final tid = await showTimePicker(context: context,initialTime: TimeOfDay(hour: 0, minute: 0),
-                        initialEntryMode: TimePickerEntryMode.inputOnly,
-                        );
-                        
-                        if (tid != null) {
-                        setState(() {
-                          _duration = Duration(hours: tid.hour, minutes: tid.minute);
-                          
-                        });
-                      }
-                    },
-                  ),*/
-                  ListTile(
-                    title: const Text("Längd"),
-                    subtitle: Text("${_duration.inMinutes} minuter"),
-                    onTap: () async{
-                      await showDialog(context: context, 
-                      builder: (context) {
-                        return AlertDialog(
-                          actions: [
-                            Center(
-                              child: TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                }, 
-                                child: Text("Klar")
-                              ),
-                            )
-                          ],
-                          content: Container(
-                            padding: EdgeInsets.symmetric(vertical: 100),
-                            child: TimePickerSpinner(
-                              is24HourMode: true,
-                              
-                              time: DateTime.utc(DateTime.now().year, 1, 1, 1, 15),
-                              isForce2Digits: true,
-                              
-                              onTimeChange: (time) {
-                                setState(() {
-                                  _duration = Duration(hours: time.hour, minutes: time.minute);
-                                },);
-                              },
-                            ),
-                          ),
-                        );
-                        },
-                      );
-                    },
+                    
                   ),
+                  
                 ]
               );
             }
@@ -145,9 +99,32 @@ class _AddEventState extends State<AddEvent>{
             ),
             TextButton(
               onPressed: (){
-                Algorithm.planEvent(_title, _duration);
-                callbackFunction();
-                Navigator.of(context).pop();
+                bool flag = false;
+                try {
+                  String hour = _tempDuration.substring(0, 2);
+                  String minut = _tempDuration.substring(3, 5);
+                
+                  _duration = new Duration(hours: int.parse(hour), minutes: int.parse(minut));
+                  flag = true;
+                } catch (e) {
+                }
+                
+                
+                if (flag) {
+                  Algorithm.planEvent(_title, _duration);
+                  callbackFunction();
+                  Navigator.of(context).pop();
+                }
+                else{
+                  showDialog(
+                    context: context, 
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text("Fel inmatning på Längd"),
+                      );
+                    }
+                  );
+                }
               }, 
               child: const Text("Skapa")
             ),

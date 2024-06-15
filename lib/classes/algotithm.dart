@@ -41,7 +41,7 @@ class Algorithm{
 
     List<DayEvent> looseEvents = DayEvent.getLooseEventAndRemove(spann);
     List<DayEvent> staticEvents = DayEvent.getEventsInSpannAndRemove(spann);
-    int howMany = 100;
+    int howMany = 1;
 
    
     DayEvent.events += planList(looseEvents, spann, staticEvents, howMany, true);   //replan whole looseschema
@@ -84,18 +84,20 @@ class Algorithm{
       
     }
 
-
+    
     //generate random times
+    
     for (int i = 0; i < howMany; i++){
       arrayOfSchemas.add(List.from(staticEvents));
       
       for (DayEvent current in looseEvents) {
         int durrTime = current.date.duration.inMinutes ~/ 5;
         
+        int startFrom = 96;
 
         bool okSpot = false;
         while (!okSpot) {
-          int startTime = Random().nextInt(spannTime - durrTime);
+          int startTime = startFrom;
 
           List<int> eventValues = [];
 
@@ -112,10 +114,15 @@ class Algorithm{
             randEvent = DayEvent(start: DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day + 1 + day, hour, minute), duration: current.date.duration, title: current.title, isAuto: true, isOptional: !isShuffle);
             arrayOfSchemas[i].add(randEvent);
             localNonoValues[i].addAll(getNoNoValues(randEvent, spann));
+          }
+          else {
+            startFrom++;
           }   
         }
       }
     }
+    
+
 
 
     //find good schemas from arrayOfSchemas

@@ -61,21 +61,14 @@ class _AddEventState extends State<AddEvent>{
                         _title = value;
                       },
                     )
-                  ),  /*
+                  ),  
                   ListTile(
-                    title: Text("Start tid"),
+                    title: Text("Längd"),
                     
-                    subtitle: Text("${_startTime.hour}:${_startTime.minute}"),
+                    subtitle: Text("${_duration.inMinutes} minuter"),
                     onTap: () async{
-                      final tid = await showDateTimePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime.now());
-                      if (tid != null) {
-                        setState(() {
-                          _startTime = tid;
-                          }
-                        );
-                      }
-                      final tid = await showTimePicker(context: context,initialTime: TimeOfDay(hour: 0, minute: 0),
-                        initialEntryMode: TimePickerEntryMode.inputOnly,
+                      final tid = await showTimePicker(context: context,initialTime: TimeOfDay(hour: 1, minute: 15),
+                        initialEntryMode: TimePickerEntryMode.dialOnly,
                         );
                         
                         if (tid != null) {
@@ -84,43 +77,6 @@ class _AddEventState extends State<AddEvent>{
                           
                         });
                       }
-                    },
-                  ),*/
-                  ListTile(
-                    title: const Text("Längd"),
-                    subtitle: Text("${_duration.inMinutes} minuter"),
-                    onTap: () async{
-                      await showDialog(context: context, 
-                      builder: (context) {
-                        return AlertDialog(
-                          actions: [
-                            Center(
-                              child: TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                }, 
-                                child: Text("Klar")
-                              ),
-                            )
-                          ],
-                          content: Container(
-                            padding: EdgeInsets.symmetric(vertical: 100),
-                            child: TimePickerSpinner(
-                              is24HourMode: true,
-                              
-                              time: DateTime.utc(DateTime.now().year, 1, 1, 1, 15),
-                              isForce2Digits: true,
-                              
-                              onTimeChange: (time) {
-                                setState(() {
-                                  _duration = Duration(hours: time.hour, minutes: time.minute);
-                                },);
-                              },
-                            ),
-                          ),
-                        );
-                        },
-                      );
                     },
                   ),
                 ]

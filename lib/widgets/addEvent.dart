@@ -63,20 +63,24 @@ class _AddEventState extends State<AddEvent>{
                       },
                     )
                   ),  
+                  
                   ListTile(
                     title: Text("Längd"),
-                    subtitle: TextField(
-                      autofocus: false,
-                      textAlign: TextAlign.center,
-                      maxLength: 5,
-                      onChanged: (value) {
-                        _tempDuration = value;
-                      },
-                    )
                     
-                    
+                    subtitle: Text("${_duration.inMinutes} minuter"),
+                    onTap: () async{
+                      final tid = await showTimePicker(context: context,initialTime: TimeOfDay(hour: 0, minute: 0),
+                        initialEntryMode: TimePickerEntryMode.inputOnly,
+                        );
+                        
+                        if (tid != null) {
+                        setState(() {
+                          _duration = Duration(hours: tid.hour, minutes: tid.minute);
+                          
+                        });
+                      }
+                    },
                   ),
-                  
                 ]
               );
             }
@@ -99,32 +103,9 @@ class _AddEventState extends State<AddEvent>{
             ),
             TextButton(
               onPressed: (){
-                bool flag = false;
-                try {
-                  String hour = _tempDuration.substring(0, 2);
-                  String minut = _tempDuration.substring(3, 5);
-                
-                  _duration = new Duration(hours: int.parse(hour), minutes: int.parse(minut));
-                  flag = true;
-                } catch (e) {
-                }
-                
-                
-                if (flag) {
                   Algorithm.planEvent(_title, _duration);
                   callbackFunction();
                   Navigator.of(context).pop();
-                }
-                else{
-                  showDialog(
-                    context: context, 
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text("Fel inmatning på Längd"),
-                      );
-                    }
-                  );
-                }
               }, 
               child: const Text("Skapa")
             ),

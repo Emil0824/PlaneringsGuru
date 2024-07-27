@@ -17,18 +17,19 @@ class AdvancedPlanner extends StatefulWidget {
 class _AdvancedPlannerState extends State<AdvancedPlanner> {
   @override
   Widget build(BuildContext context) {
-    DateTime _startTime = DateTime.now();
+    DateTime? _startTime = null;
     Duration _duration = Duration(hours: 1, minutes: 15);
     String _title = "Ange titel";
     bool _isLoose = false;
-    DateTime _startDate = DateTime.now();
-    DateTime _endDate = DateTime.now().add(Duration(days: 4));
+    DateTime? _startDate = null;
+    DateTime? _endDate = null;
+    bool isError = false;
     
 
 
 
     return Scaffold(
-      appBar: AppBar(title: Text("Advancerad Planering")),
+      appBar: AppBar(title: Text("Planering")),
       
       body: StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {           
@@ -45,117 +46,157 @@ class _AdvancedPlannerState extends State<AdvancedPlanner> {
               )
             ),
             Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("Löst planerat:"),
-                Checkbox(
-                  value: _isLoose,
-                  checkColor: Colors.black,
-                  activeColor: Colors.amber,
-                  onChanged: (bool? value){
-                    setState(() {
-                      _isLoose = value!;
-                    });
-                  },
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 150,
+                      child: ListTile(
+                        title: const Text("Längd"),
+                        subtitle: Text("${_duration.inMinutes} minuter"),
+                        onTap: () async {
+                          final tid = await showTimePicker(
+                            context: context,
+                            initialTime: TimeOfDay(hour: 0, minute: 0),
+                            initialEntryMode: TimePickerEntryMode.inputOnly,
+                          );
+                          if (tid != null) {
+                            setState(() {
+                              _duration =
+                                  Duration(hours: tid.hour, minutes: tid.minute);
+                            });
+                          }
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      width: 150,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: isError ? Colors.red : Colors.transparent,
+                            width: 2.0,
+                          ),
+                          borderRadius: BorderRadius.circular(4.0), // Optional, for rounded corners
+                        ),
+                        child: ListTile(
+                          title: const Text("Fast tid & dag"),
+                          subtitle: getFastSubtitle(_startTime),
+                          onTap: () async {
+                            final tid = await showOmniDateTimePicker(
+                              context: context,
+                              is24HourMode: true,
+                              isForce2Digits: true,
+                              firstDate: DateTime.now(),
+                            );
+                            if (tid != null) {
+                              setState(() {
+                                _startTime = tid;
+                              });
+                            }
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            if (_isLoose) Row(
+            Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
                     width: 150,
-                    child: ListTile(
-                      title: const Text("Första Datum"),
-
-                      subtitle: Text("${_startDate.day}/${_startDate.month}"),
-                      onTap: () async{
-                          final tid = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate:  DateTime.now().subtract(const Duration(days: 365 * 100)),
-                          lastDate:  DateTime.now().add(const Duration(days: 365 * 100)),
-                          
-                        );
-                        if (tid != null) {
-                          setState(() {
-                            _startDate = tid;
-                            }
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: isError ? Colors.red : Colors.transparent,
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(4.0), // Optional, for rounded corners
+                      ),
+                      child: ListTile(
+                        title: const Text("Första Datum"),
+                    
+                        subtitle: getDateSubtitle(_startDate),
+                        onTap: () async{
+                            final tid = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate:  DateTime.now().subtract(const Duration(days: 365 * 100)),
+                            lastDate:  DateTime.now().add(const Duration(days: 365 * 100)),
+                            
                           );
-                        }
-                      },
+                          if (tid != null) {
+                            setState(() {
+                              _startDate = tid;
+                              }
+                            );
+                          }
+                        },
+                      ),
                     ),
                   ),
                   SizedBox(
                     width: 150,
-                    child: ListTile(
-                      title: const Text("Sista Datum"),
-                      subtitle: Text("${_endDate.day}/${_endDate.month}"),
-                      onTap: () async{
-                          final tid = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate:  DateTime.now().subtract(const Duration(days: 365 * 100)),
-                          lastDate:  DateTime.now().add(const Duration(days: 365 * 200)),
-                        );
-                        if (tid != null) {
-                          setState(() {
-                            _endDate = tid;
-                            }
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: isError ? Colors.red : Colors.transparent,
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(4.0), // Optional, for rounded corners
+                      ),
+                      child: ListTile(
+                        title: const Text("Sista Datum"),
+                        subtitle: getDateSubtitle(_endDate),
+                        onTap: () async{
+                            final tid = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate:  DateTime.now().subtract(const Duration(days: 365 * 100)),
+                            lastDate:  DateTime.now().add(const Duration(days: 365 * 200)),
                           );
-                        }
-                      },
+                          if (tid != null) {
+                            setState(() {
+                              _endDate = tid;
+                              }
+                            );
+                          }
+                        },
+                      ),
                     ),
                   ),
                 ],
-              ) else ListTile(
-                title: const Text("Start tid"),
-                
-                subtitle: Text("${_startTime.hour.toString().padLeft(2, '0')}:${_startTime.minute.toString().padLeft(2, '0')}"),
-                onTap: () async{
-                  final tid = await showOmniDateTimePicker(
-                    context: context,
-                    is24HourMode: true,
-                    isForce2Digits: true,
-                    firstDate: DateTime.now(),
-                    
-                  );
-                  if (tid != null) {
-                    setState(() {
-                      _startTime = tid;
-                      }
-                    );
-                  }
-                },
               ),
               
-            ListTile(
-              title: const Text("Längd"),
-              subtitle: Text("${_duration.inMinutes} minuter"),
-              onTap: () async{
-                final tid = await showTimePicker(context: context,initialTime: TimeOfDay(hour: 0, minute: 0),
-                  initialEntryMode: TimePickerEntryMode.inputOnly,
-                  );
-                if (tid != null) {
-                  setState(() {
-                    _duration = Duration(hours: tid.hour, minutes: tid.minute);
-                    
-                  });
-                }
-              },
-            ),
+    
             TextButton(
               onPressed: (){
-                  if(_isLoose){
-                    Algorithm.planSpannedEvent(_title, _duration, DateTimeRange(start: _startDate, end: _endDate));
-                  }
-                  else {
-                    DayEvent.addEventFields(_startTime, _duration, _title, _isLoose);
-                    }
+                  //bestäm om den e loose
                   
-                  Navigator.pop(context);
+
+
+                  if((_startTime != null && (_startDate !=null || _endDate!=null)) || ((_startDate ==null || _endDate ==null) && _startTime == null)|| (_startTime == null && _startDate ==null && _endDate==null)){
+                    setState(() {
+                      _startTime = null;
+                      _endDate = null;
+                      _startDate = null;
+                      //Error
+                      print("errororoororoororo");
+                      isError = true;
+                      
+                    });
+                  }
+                  else if(_startDate !=null && _endDate !=null){
+                    Algorithm.planSpannedEvent(_title, _duration, DateTimeRange(start: _startDate!, end: _endDate!));
+                    Navigator.pop(context);
+                  }
+                  else{
+                    DayEvent.addEventFields(_startTime!, _duration, _title, false);
+                    Navigator.pop(context);
+                  }
+                  
+                  
                 },
               child: const Text("Skapa")
               )
@@ -167,8 +208,24 @@ class _AdvancedPlannerState extends State<AdvancedPlanner> {
     );
   }
 
+  getDateSubtitle(_time){
+    if (_time == null){
+      return Text("inte vald");
+    }
+    else {
+      return Text("${_time.day}/${_time.month}");
+    }
+  }
 
-
+  getFastSubtitle(_startTime){
+    if (_startTime == null) {
+      return Text("inte vald");
+    }
+    else {
+      
+      return Text("${_startTime.hour.toString().padLeft(2, '0')}:${_startTime.minute.toString().padLeft(2, '0')} - ${_startTime.day.toString()}/${_startTime.month.toString()}");
+    }
+  }
 
   Future<DateTime?> showDateTimePicker({
     required BuildContext context,

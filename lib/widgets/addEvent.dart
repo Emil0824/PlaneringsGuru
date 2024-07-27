@@ -34,7 +34,10 @@ class _AddEventState extends State<AddEvent>{
   Widget build(BuildContext context){
     return FloatingActionButton(
         onPressed: () {
-          eventPicker();
+          //eventPicker();
+          Navigator.push(context, MaterialPageRoute(
+            builder: (context) => AdvancedPlanner(),
+          ));
         },
         tooltip: 'Skapa Event',
         child: const Icon(Icons.add),

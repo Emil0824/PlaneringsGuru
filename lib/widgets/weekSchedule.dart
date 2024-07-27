@@ -72,7 +72,7 @@ class WeekSchedule extends StatelessWidget{
             }
           ),
         ),
-        Positioned(
+        /*Positioned(
           left: 15,
           bottom: 15,
           child: FloatingActionButton(
@@ -85,7 +85,7 @@ class WeekSchedule extends StatelessWidget{
             tooltip: 'Schema val',
             child: const Icon(Icons.menu),
           )
-        )
+        )*/
       ],
     );
   }

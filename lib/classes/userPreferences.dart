@@ -14,24 +14,6 @@ class UserPreferences {
 
 
   static void weighAdjust(DayEvent event){
-    DateTimeRange spann = DateTimeRange(start: event.date.start.subtract(const Duration(days: 1)), end: event.date.start.add(const Duration(days: 1)));
-    List<DayEvent> scheduleInspann = [];
-    scheduleInspann.addAll(DayEvent.getEventsInSpann(spann));
-    scheduleInspann.addAll(DayEvent.getLooseEvent(spann));
-
-    List<double> calcavgGaps = Algorithm.calcavgGaps(scheduleInspann, spann);
-    breakTime += (calcavgGaps[0]-breakTime).sign * (1 - (calcavgGaps[1]/ 100)) * 5;
-
-
-
-    List<int> nonoValues = [];
-    
-    DateTime now = DateTime.now();
-    DateTimeRange spann2 = DateTimeRange(start: DateTime.utc(now.year, now.month, now.day+1), end: DateTime.utc(now.year, now.month, now.day + 2));
-    nonoValues.addAll(Algorithm.getNoNoValues(event, spann2));
-    
-    List<double> positionOnDay = Algorithm.calcavgDistance2am(nonoValues);
-    workTimeShifter += (positionOnDay[2] - 12 - workTimeShifter) * 0.05;
 
   }
 }

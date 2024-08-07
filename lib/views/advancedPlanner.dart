@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:planeringsguru/classes/algotithm.dart';
 import 'package:planeringsguru/classes/dayEvent.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
+import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
 
 
 class AdvancedPlanner extends StatefulWidget {
@@ -135,9 +136,37 @@ class _AdvancedPlannerState extends State<AdvancedPlanner> {
               title: const Text("Längd"),
               subtitle: Text("${_duration.inMinutes} minuter"),
               onTap: () async{
-                final tid = await showTimePicker(context: context,initialTime: TimeOfDay(hour: 0, minute: 0),
-                  initialEntryMode: TimePickerEntryMode.inputOnly,
-                  );
+                final tid = await showDialog(context: context, 
+                      builder: (context) {
+                        return AlertDialog(
+                          actions: [
+                            Center(
+                              child: TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                }, 
+                                child: Text("Klar")
+                              ),
+                            )
+                          ],
+                          content: Container(
+                            padding: EdgeInsets.symmetric(vertical: 100),
+                            child: TimePickerSpinner(
+                              is24HourMode: true,
+                              
+                              time: DateTime.utc(DateTime.now().year, 1, 1, 1, 15),
+                              isForce2Digits: true,
+                              
+                              onTimeChange: (time) {
+                                setState(() {
+                                  _duration = Duration(hours: time.hour, minutes: time.minute);
+                                },);
+                              },
+                            ),
+                          ),
+                        );
+                        },
+                      );
                 if (tid != null) {
                   setState(() {
                     _duration = Duration(hours: tid.hour, minutes: tid.minute);

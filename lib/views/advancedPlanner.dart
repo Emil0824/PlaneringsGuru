@@ -155,7 +155,8 @@ class _AdvancedPlannerState extends State<AdvancedPlanner> {
                     DayEvent.addEventFields(_startTime, _duration, _title, _isLoose);
                     }
                   
-                  Navigator.pop(context);
+                  int nCount = 0;
+                  Navigator.of(context).popUntil((_) => nCount++ >= 2);
                 },
               child: const Text("Skapa")
               )

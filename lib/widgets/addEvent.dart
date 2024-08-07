@@ -96,7 +96,7 @@ class _AddEventState extends State<AddEvent>{
             TextButton(
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => AdvancedPlanner(),
+                  builder: (context) => AdvancedPlanner(callbackFunction: callbackFunction),
                   ));
               },
               child: const Text("Avancerad"),

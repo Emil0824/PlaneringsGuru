@@ -7,14 +7,28 @@ import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 
 
 class AdvancedPlanner extends StatefulWidget {
-  const AdvancedPlanner({super.key});
+  
+  final Function callbackFunction;
+  
+  AdvancedPlanner({Key? key, required this.callbackFunction}) : super(key: key);
 
 
   @override
-  State<AdvancedPlanner> createState() => _AdvancedPlannerState();
+  _AdvancedPlannerState createState() => _AdvancedPlannerState(
+    callbackFunction: callbackFunction,
+  );
+
 }
 
 class _AdvancedPlannerState extends State<AdvancedPlanner> {
+
+  final Function callbackFunction;
+  
+
+  _AdvancedPlannerState({required this.callbackFunction});
+
+
+  
   @override
   Widget build(BuildContext context) {
     DateTime _startTime = DateTime.now();
@@ -24,7 +38,7 @@ class _AdvancedPlannerState extends State<AdvancedPlanner> {
     DateTime _startDate = DateTime.now();
     DateTime _endDate = DateTime.now().add(Duration(days: 4));
     
-
+    
 
 
     return Scaffold(
@@ -156,6 +170,7 @@ class _AdvancedPlannerState extends State<AdvancedPlanner> {
                     }
                   
                   int nCount = 0;
+                  callbackFunction();
                   Navigator.of(context).popUntil((_) => nCount++ >= 2);
                 },
               child: const Text("Skapa")

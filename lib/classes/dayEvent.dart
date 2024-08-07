@@ -12,9 +12,16 @@ class DayEvent{
 
   //list of all personaly planned events
   static List<DayEvent> events = [
-    DayEvent(start: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 13, 0), duration: const Duration(hours:1, minutes: 15), title: "tes1", isAuto: false),
-    DayEvent(start: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 16, 0), duration: const Duration(hours:1, minutes: 15), title: "tes2", isAuto: true),
-    DayEvent(start: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 12, 0).add(const Duration(days: 1)), duration: const Duration(hours:1, minutes: 15), title: "tes3", isAuto: true),
+    DayEvent(start: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 8, 0), duration: const Duration(hours:4), title: "Cyckel utflykt", isAuto: false),
+    DayEvent(start: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 14, 0), duration: const Duration(hours:3), title: "Picknick", isAuto: true),
+    DayEvent(start: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 1, 8, 0), duration: const Duration(hours:3), title: "Hund parken", isAuto: false),
+    DayEvent(start: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 1, 14, 0), duration: const Duration(hours:4), title: "IKEA", isAuto: true),
+    DayEvent(start: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 2, 10, 0), duration: const Duration(hours:2), title: "Möte med Jens", isAuto: false),
+    DayEvent(start: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 2, 14, 0), duration: const Duration(minutes: 30), title: "Ring doktor", isAuto: true),
+    DayEvent(start: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 2, 17, 0), duration: const Duration(hours:1, minutes: 30), title: "Hämta barn på dagis", isAuto: false),
+    DayEvent(start: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 3, 8, 30), duration: const Duration(hours:1), title: "Sprint utverdering", isAuto: false),
+    DayEvent(start: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 3, 15, 0), duration: const Duration(hours:1), title: "Möte med HR", isAuto: false),
+    DayEvent(start: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 4, 9, 30), duration: const Duration(hours:6), title: "Skapa jira tickets", isAuto: true),
   ];
 
 

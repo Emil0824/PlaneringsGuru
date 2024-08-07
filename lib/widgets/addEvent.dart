@@ -96,6 +96,7 @@ class _AddEventState extends State<AddEvent>{
                 Navigator.push(context, MaterialPageRoute(
                   builder: (context) => AdvancedPlanner(),
                   ));
+                
               },
               child: const Text("Avancerad"),
             ),

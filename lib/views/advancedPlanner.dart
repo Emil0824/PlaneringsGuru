@@ -135,8 +135,8 @@ class _AdvancedPlannerState extends State<AdvancedPlanner> {
               title: const Text("Längd"),
               subtitle: Text("${_duration.inMinutes} minuter"),
               onTap: () async{
-                final tid = await showTimePicker(context: context,initialTime: TimeOfDay(hour: 0, minute: 0),
-                  initialEntryMode: TimePickerEntryMode.inputOnly,
+                final tid = await showTimePicker(context: context,initialTime: TimeOfDay(hour: 1, minute: 15),
+                        initialEntryMode: TimePickerEntryMode.dialOnly,
                   );
                 if (tid != null) {
                   setState(() {
@@ -155,7 +155,8 @@ class _AdvancedPlannerState extends State<AdvancedPlanner> {
                     DayEvent.addEventFields(_startTime, _duration, _title, _isLoose);
                     }
                   
-                  Navigator.pop(context);
+                  int nCount = 0;
+                  Navigator.of(context).popUntil((_) => nCount++ >= 2);
                 },
               child: const Text("Skapa")
               )
